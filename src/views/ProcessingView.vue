@@ -1,26 +1,24 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { CheckCircle, Loader2, Sparkles, Zap, Brain, Rocket } from 'lucide-vue-next'
-import { useMotion } from '@vueuse/motion'
+import { CheckCircle, Zap, Brain, Sparkles, Database } from 'lucide-vue-next'
 
 const router = useRouter()
 const progress = ref(0)
 const currentStepIndex = ref(0) 
 
 const steps = [
-  { icon: Zap, text: "Ingesting Meta Campaign Data", subtext: "Connecting to Graph API..." },
-  { icon: Brain, text: "Analyzing Creative Assets", subtext: "Running Computer Vision models..." },
-  { icon: Sparkles, text: "Extracting High-Performing Media", subtext: "Identifying winning images and text..." }
+  { icon: Zap, text: "Ingesting Meta Data", subtext: "Establishing secure link to Graph API..." },
+  { icon: Brain, text: "Analyzing Creatives", subtext: "Processing vision models for aesthetic scoring..." },
+  { icon: Sparkles, text: "Extracting Assets", subtext: "Identifying highest-performing media and text..." }
 ]
 
 const currentStep = computed(() => steps[currentStepIndex.value])
 
 onMounted(() => {
   const interval = setInterval(() => {
-    progress.value += 0.25 // Progress (takes ~16s total)
+    progress.value += 0.5
     
-    // Step logic (3 steps, so thresholds at ~33% and ~66%)
     if (progress.value < 33) currentStepIndex.value = 0
     else if (progress.value < 66) currentStepIndex.value = 1
     else currentStepIndex.value = 2
@@ -34,112 +32,97 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#0f172a] text-white flex flex-col items-center justify-center relative overflow-hidden">
+  <div class="min-h-screen bg-stone-50 text-slate-900 flex flex-col items-center justify-center relative overflow-hidden selection:bg-gold-500/20">
     
     <!-- Background Ambient Effects -->
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[120px] animate-pulse-slow"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/20 rounded-full blur-[120px] animate-pulse-slow delay-1000"></div>
+        <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-500/5 rounded-full blur-[120px] animate-pulse"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-gold-500/5 rounded-full blur-[120px] animate-pulse delay-1000"></div>
     </div>
 
-    <div class="z-10 w-full max-w-md flex flex-col items-center">
+    <div class="z-10 w-full max-w-lg flex flex-col items-center p-8">
       
-      <!-- Central Animation -->
-      <div class="relative w-48 h-48 mb-12 flex items-center justify-center">
-         <!-- Outer Rings -->
-         <div class="absolute inset-0 border border-blue-500/30 rounded-full animate-[spin_10s_linear_infinite]"></div>
-         <div class="absolute inset-4 border border-purple-500/30 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+      <!-- Central Animation Hub -->
+      <div class="relative w-64 h-64 mb-16 flex items-center justify-center">
+         <!-- Data Pulse Rings -->
+         <div class="absolute inset-0 border border-slate-900/5 rounded-full animate-[spin_25s_linear_infinite]"></div>
+         <div class="absolute inset-8 border border-gold-500/10 rounded-full animate-[spin_10s_linear_infinite_reverse]"></div>
          
-         <!-- Glowing Morphing Core -->
-         <div 
-            class="w-24 h-24 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-full blur-md animate-pulse-fast shadow-[0_0_50px_rgba(139,92,246,0.5)]"
-            v-motion
-            :initial="{ scale: 0.8, opacity: 0.5 }"
-            :enter="{ scale: 1, opacity: 1, transition: { repeat: Infinity, repeatType: 'reverse', duration: 2000 } }"
-         ></div>
-
-         <!-- Icon Overlay -->
-         <div class="absolute inset-0 flex items-center justify-center">
+         <!-- Core Scanner -->
+         <div class="w-32 h-32 bg-white rounded-[40px] shadow-2xl premium-shadow border border-stone-100 flex items-center justify-center relative z-10 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-tr from-blue-500/5 to-transparent"></div>
+            <!-- Scanning Line -->
+            <div class="absolute top-0 left-0 w-full h-1 bg-gold-500/30 blur-sm animate-[bounce_3s_infinite] opacity-50"></div>
+            
             <component 
                 :is="currentStep.icon" 
-                class="w-10 h-10 text-white drop-shadow-lg"
-                v-motion
-                :key="currentStepIndex"
-                :initial="{ opacity: 0, scale: 0.5 }"
-                :enter="{ opacity: 1, scale: 1 }"
+                class="w-10 h-10 text-slate-950 transition-all duration-1000"
+                :class="{'scale-125': progress % 10 > 5}"
             />
+         </div>
+
+         <!-- Orbiting Nodes -->
+         <div class="absolute inset-0 animate-[spin_6s_linear_infinite]">
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border border-stone-200 rounded-lg shadow-xl shadow-gold-500/20 rotate-45"></div>
          </div>
       </div>
 
       <!-- Text Content -->
-      <div class="text-center space-y-2 mb-12 h-20">
-        <h2 
-            class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-200 via-white to-purple-200"
-            v-motion
-            :key="currentStep.text"
-            :initial="{ opacity: 0, y: 10 }"
-            :enter="{ opacity: 1, y: 0 }"
-        >
+      <div class="text-center space-y-4 mb-16 h-28 max-w-sm">
+        <h2 class="text-3xl font-black text-slate-950 tracking-tighter uppercase italic">
           {{ currentStep.text }}
         </h2>
-        <p 
-            class="text-sm text-blue-300/80 font-mono"
-            v-motion
-            :key="currentStep.subtext"
-            :initial="{ opacity: 0 }"
-            :enter="{ opacity: 1, transition: { delay: 200 } }"
-        >
-          > {{ currentStep.subtext }}<span class="animate-pulse">_</span>
-        </p>
+        <div class="flex flex-col items-center gap-2">
+            <p class="text-lg text-slate-500 font-medium leading-relaxed">
+              {{ currentStep.subtext }}
+            </p>
+        </div>
       </div>
 
-      <!-- Progress Indicators -->
-      <div class="w-full space-y-6">
-        <!-- Step Dots -->
-        <div class="flex justify-between px-8">
+      <!-- Progress Matrix -->
+      <div class="w-full space-y-8">
+        <!-- Step Visualization -->
+        <div class="flex justify-between relative px-2">
+            <!-- Connector -->
+            <div class="absolute top-1.5 left-6 right-6 h-0.5 bg-stone-200">
+                <div 
+                    class="h-full bg-slate-950 transition-all duration-500 ease-in-out"
+                    :style="{ width: `${progress}%` }"
+                ></div>
+            </div>
+
             <div 
                 v-for="(step, index) in steps" 
                 :key="index"
-                class="flex flex-col items-center gap-2"
+                class="relative z-10"
             >
                 <div 
-                    class="w-3 h-3 rounded-full transition-all duration-500 border border-white/10"
+                    class="w-3.5 h-3.5 rounded-full border-2 transition-all duration-500"
                     :class="[
-                        index === currentStepIndex ? 'bg-blue-500 scale-125 shadow-[0_0_10px_rgba(59,130,246,0.8)]' : 
-                        index < currentStepIndex ? 'bg-green-500' : 'bg-gray-800'
+                        index === currentStepIndex ? 'bg-white border-gold-500 scale-125 shadow-lg' : 
+                        index < currentStepIndex ? 'bg-slate-900 border-slate-900' : 'bg-white border-stone-200'
                     ]"
                 ></div>
             </div>
         </div>
 
-        <!-- Progress Bar -->
-        <div class="relative w-full h-1 bg-gray-800 rounded-full overflow-hidden">
-            <div 
-                class="absolute left-0 top-0 h-full bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 transition-all duration-300 ease-out shadow-[0_0_20px_rgba(168,85,247,0.8)]"
-                :style="{ width: `${progress}%` }"
-            ></div>
-            <!-- Glint effect -->
-            <div 
-                class="absolute top-0 h-full w-20 bg-white/50 blur-sm transform skew-x-12 translate-x-[-100%]"
-                :style="{ left: `${progress}%` }"
-            ></div>
-        </div>
-        
-        <div class="flex justify-between text-[10px] text-gray-500 font-mono uppercase tracking-widest px-1">
-            <span>Progress</span>
-            <span>{{ Math.round(progress) }}%</span>
+        <!-- Metric Readout -->
+        <div class="bg-white border border-stone-200 rounded-2xl p-6 shadow-xl premium-shadow flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 bg-stone-50 rounded-xl flex items-center justify-center border border-stone-100">
+                    <Database class="w-4 h-4 text-slate-400" />
+                </div>
+                <div>
+                    <div class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Network</div>
+                    <div class="text-sm font-black text-slate-950 uppercase tracking-tight">Syncing Meta Assets</div>
+                </div>
+            </div>
+            <div class="text-right">
+                <div class="text-2xl font-black text-slate-950 tracking-tighter">{{ Math.round(progress) }}%</div>
+            </div>
         </div>
       </div>
 
     </div>
   </div>
 </template>
-
-<style scoped>
-.animate-pulse-slow {
-    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-.animate-pulse-fast {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-</style>

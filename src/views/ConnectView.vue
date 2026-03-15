@@ -1,6 +1,8 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { Facebook, ShieldCheck } from 'lucide-vue-next'
+import Logo from '../components/Logo.vue'
 
 const router = useRouter()
 const isConnecting = ref(false)
@@ -14,27 +16,64 @@ const handleConnect = () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-gray-900 flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full space-y-6 text-center">
-      <div class="w-16 h-16 bg-blue-600 rounded-full mx-auto flex items-center justify-center mb-4">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+  <div class="min-h-screen bg-stone-50 flex items-center justify-center p-6 selection:bg-gold-500/20">
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-gold-500 via-slate-900 to-gold-500"></div>
+    
+    <div class="max-w-md w-full space-y-8 animate-fade-in-up">
+      <div class="text-center space-y-4">
+        <div class="inline-block p-4 bg-white rounded-3xl shadow-xl border border-stone-100 premium-shadow mb-4">
+          <Logo size="w-12 h-12" />
+        </div>
+        <h1 class="text-4xl font-black text-slate-950 tracking-tight">Connect Meta</h1>
+        <p class="text-slate-500 font-medium">Authorize Metamorph to analyze your high-performing campaigns and assets.</p>
       </div>
-      <h2 class="text-2xl font-bold text-gray-900">Connect to Meta</h2>
-      <p class="text-gray-600">Authorize Metamorph to access your ad campaigns and performance data.</p>
-      
-      <button 
-        @click="handleConnect"
-        :disabled="isConnecting"
-        class="w-full py-3 px-4 bg-[#1877F2] hover:bg-[#166fe5] text-white font-semibold rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
-      >
-        <svg v-if="!isConnecting" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9.998 21.375V11.25H7.5v-3.75h2.498V5.378c0-2.472 1.51-3.818 3.715-3.818 1.056 0 2.162.189 2.162.189v2.375h-1.218c-1.225 0-1.606.76-1.606 1.541V7.5h2.682l-.428 3.75h-2.254v10.125h-3z"/></svg>
-        <span v-if="isConnecting">Connecting...</span>
-        <span v-else>Continue with Facebook</span>
-      </button>
-      
-      <p class="text-xs text-gray-400 mt-4">
-        By connecting, you agree to Metamorph's Terms of Service and Privacy Policy.
-      </p>
+
+      <div class="bg-white rounded-[32px] shadow-2xl premium-shadow p-10 border border-white relative overflow-hidden">
+        <!-- Facebook Color Accent -->
+        <div class="absolute top-0 left-0 w-full h-1.5 bg-[#1877F2]"></div>
+        
+        <div class="space-y-6">
+          <div class="flex items-center gap-4 p-4 bg-blue-50/50 border border-blue-100/50 rounded-2xl">
+            <div class="w-10 h-10 bg-[#1877F2] rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20 shrink-0">
+               <Facebook class="w-6 h-6 text-white fill-current" />
+            </div>
+            <div class="flex-1">
+              <div class="text-xs font-black text-[#1877F2] uppercase tracking-widest">Platform</div>
+              <div class="text-sm font-bold text-slate-900">Facebook & Instagram Ads</div>
+            </div>
+          </div>
+
+          <button 
+            @click="handleConnect"
+            :disabled="isConnecting"
+            class="w-full py-4 px-6 bg-[#1877F2] hover:bg-[#166fe5] text-white font-black rounded-2xl transition-all shadow-xl shadow-blue-500/20 flex items-center justify-center gap-3 disabled:opacity-70 disabled:cursor-not-allowed group active:scale-95"
+          >
+            <span v-if="isConnecting" class="flex items-center gap-3">
+              <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Authenticating to Meta Ads API
+            </span>
+            <span v-else class="flex items-center gap-3">
+              Continue with Meta
+              <ArrowRight class="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+            </span>
+          </button>
+
+          <div class="flex items-center justify-center gap-2 py-4 border-t border-stone-100">
+            <ShieldCheck class="w-4 h-4 text-green-500" />
+            <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Enterprise Grade Security</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] leading-relaxed">
+          By connecting, you agree to our<br/>
+          <a href="#" class="text-slate-600 hover:text-gold-500 underline decoration-slate-200">Terms of Service</a> & <a href="#" class="text-slate-600 hover:text-gold-500 underline decoration-slate-200">Privacy Policy</a>
+        </p>
+      </div>
     </div>
   </div>
 </template>

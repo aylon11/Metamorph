@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { Settings, MapPin, Users, Target, Rocket, Sparkles, ChevronRight } from 'lucide-vue-next'
+import { Settings, MapPin, Users, Target, Rocket, Sparkles, ChevronRight, Check } from 'lucide-vue-next'
 import Logo from '../components/Logo.vue'
 
 const router = useRouter()
@@ -18,162 +18,237 @@ const handleGenerate = () => {
   isGenerating.value = true
   setTimeout(() => {
     router.push('/draft-processing')
-  }, 300)
+  }, 1000)
 }
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#0f172a] text-white font-sans flex flex-col">
+  <div class="min-h-screen bg-stone-50 text-slate-900 font-sans flex flex-col selection:bg-gold-500/20">
     <!-- Navbar -->
-    <nav class="bg-[#1e293b] border-b border-gray-700">
-      <div class="w-full px-6 h-16 flex items-center justify-between">
+    <nav class="bg-white border-b border-stone-200 sticky top-0 z-50">
+      <div class="w-full px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
-           <Logo />
-           <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Metamorph</span>
+           <Logo size="w-7 h-7" />
+           <span class="text-xl font-extrabold tracking-tight">Metamorph</span>
         </div>
-        <div class="px-3 py-1 bg-purple-900/30 border border-purple-500/30 rounded-full text-xs font-medium text-purple-300">
-          Campaign Configuration
+        <div class="px-4 py-1.5 bg-stone-100 border border-stone-200 rounded-full text-[10px] font-black text-slate-500 uppercase tracking-widest">
+          Campaign Architect
         </div>
       </div>
     </nav>
 
-    <main class="flex-1 max-w-4xl mx-auto w-full p-8 py-12">
-      <div class="mb-10 text-center space-y-4">
-        <div class="inline-flex p-3 bg-blue-500/10 rounded-2xl text-blue-400 mb-2">
-          <Settings class="w-8 h-8" />
+    <main class="flex-1 max-w-4xl mx-auto w-full p-8 py-20 pb-40">
+      <div class="mb-16 text-center space-y-6 animate-fade-in-up">
+        <div class="inline-flex p-4 bg-white rounded-3xl shadow-xl border border-stone-100 premium-shadow mb-4">
+          <Settings class="w-8 h-8 text-gold-500" />
         </div>
-        <h1 class="text-4xl font-bold text-white">Configure Your Campaign</h1>
-        <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-          Fine-tune the settings for your new Google Ads campaign. You can override choices manually or let Metamorph's AI analyze your assets and historical data to pick the best configurations.
+        <h1 class="text-5xl font-black text-slate-950 tracking-tight">Configure Your Campaign</h1>
+        <p class="text-slate-500 text-lg max-w-2xl mx-auto font-medium leading-relaxed">
+          Fine-tune your deployment logic. Let our AI analyze your data for optimal targeting, or specify your constraints manually.
         </p>
       </div>
 
-      <div class="space-y-6">
+      <div class="space-y-8 animate-fade-in-up" style="animation-delay: 0.1s">
         <!-- Configuration Card: Geo -->
-        <div class="bg-[#1e293b] border border-gray-700 rounded-2xl p-6 transition-all focus-within:ring-2 focus-within:ring-blue-500/50">
-          <div class="flex items-start gap-4 mb-4">
-            <div class="p-2 bg-blue-500/10 rounded-lg text-blue-400 shrink-0">
-              <MapPin class="w-5 h-5" />
+        <div class="bg-white border border-stone-200 rounded-[32px] p-8 shadow-2xl premium-shadow relative overflow-hidden group">
+          <div class="flex items-start gap-6 border-b border-stone-100 pb-8 mb-8">
+            <div class="p-3 bg-stone-50 rounded-2xl text-slate-900 border border-stone-100 shadow-sm shrink-0">
+              <MapPin class="w-6 h-6" />
             </div>
             <div class="flex-1">
-              <h3 class="text-lg font-bold text-white mb-1">Geographic Targeting</h3>
-              <p class="text-sm text-gray-400 mb-4">Specify where your ads should appear. Leave to AI to target top-performing regions from Meta.</p>
-              
-              <div class="flex flex-col sm:flex-row gap-4">
-                <label class="flex-1 cursor-pointer">
-                  <input type="radio" value="ai" v-model="config.geo" class="peer sr-only" />
-                  <div class="p-4 rounded-xl border border-gray-700 bg-slate-900/50 peer-checked:border-blue-500 peer-checked:bg-blue-900/20 hover:border-blue-500/50 transition-all flex items-center justify-center gap-2">
-                    <Sparkles class="w-4 h-4 text-blue-400" />
-                    <span class="font-medium">Leave it to AI</span>
-                  </div>
-                </label>
-                <label class="flex-1 cursor-pointer">
-                  <input type="radio" value="manual" v-model="config.geo" class="peer sr-only" />
-                  <div class="p-4 rounded-xl border border-gray-700 bg-slate-900/50 peer-checked:border-blue-500 peer-checked:bg-blue-900/20 hover:border-blue-500/50 transition-all flex items-center justify-center">
-                    <span class="font-medium">Set Manually</span>
-                  </div>
-                </label>
-              </div>
-              
-              <div v-if="config.geo === 'manual'" class="mt-4 animate-fade-in-down">
-                <input type="text" placeholder="e.g., United States, Canada, London" class="w-full bg-slate-900 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-blue-500 transition-colors" />
-              </div>
+              <h3 class="text-xl font-extrabold text-slate-950 mb-1 tracking-tight">Geographic Targeting</h3>
+              <p class="text-sm font-medium text-slate-400">Specify exactly where your ads should appear.</p>
             </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+            <label class="cursor-pointer group relative">
+              <input type="radio" value="ai" v-model="config.geo" class="sr-only" />
+              <div class="p-8 rounded-2xl border-4 transition-all duration-300 flex flex-col items-center gap-4 text-center overflow-hidden h-full"
+                   :class="config.geo === 'ai' ? 'border-gold-500 bg-white shadow-2xl scale-[1.02]' : 'border-transparent bg-stone-50/50 hover:border-gold-500/30'">
+                
+                <div class="absolute top-4 right-4 transition-opacity duration-300"
+                     :class="config.geo === 'ai' ? 'opacity-100' : 'opacity-0'">
+                    <div class="w-6 h-6 bg-gold-500 rounded-full flex items-center justify-center shadow-lg">
+                        <Check class="w-4 h-4 text-white" />
+                    </div>
+                </div>
+
+                <div class="w-14 h-14 rounded-2xl shadow-lg flex items-center justify-center transition-all duration-500"
+                     :class="config.geo === 'ai' ? 'scale-110 bg-slate-950' : 'bg-white'">
+                  <Sparkles class="w-7 h-7 transition-colors duration-500" :class="config.geo === 'ai' ? 'text-white' : 'text-slate-950'" />
+                </div>
+                <div>
+                  <div class="font-black text-slate-950 text-base uppercase tracking-widest">AI Optimized</div>
+                  <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Best for global reach</div>
+                </div>
+              </div>
+            </label>
+            
+            <label class="cursor-pointer group relative">
+              <input type="radio" value="manual" v-model="config.geo" class="sr-only" />
+              <div class="p-8 rounded-2xl border-4 transition-all duration-300 flex flex-col items-center gap-4 text-center overflow-hidden h-full"
+                   :class="config.geo === 'manual' ? 'border-gold-500 bg-white shadow-2xl scale-[1.02]' : 'border-transparent bg-stone-50/50 hover:border-gold-500/30'">
+                
+                <div class="absolute top-4 right-4 transition-opacity duration-300"
+                     :class="config.geo === 'manual' ? 'opacity-100' : 'opacity-0'">
+                    <div class="w-6 h-6 bg-gold-500 rounded-full flex items-center justify-center shadow-lg">
+                        <Check class="w-4 h-4 text-white" />
+                    </div>
+                </div>
+
+                <div class="w-14 h-14 rounded-2xl shadow-lg flex items-center justify-center transition-all duration-500"
+                     :class="config.geo === 'manual' ? 'scale-110 bg-slate-950' : 'bg-white'">
+                  <MapPin class="w-7 h-7 transition-colors duration-500" :class="config.geo === 'manual' ? 'text-white' : 'text-slate-950'" />
+                </div>
+                <div>
+                  <div class="font-black text-slate-950 text-base uppercase tracking-widest">Manual Setup</div>
+                  <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Precision Targeted</div>
+                </div>
+              </div>
+            </label>
+          </div>
+          
+          <div v-if="config.geo === 'manual'" class="mt-8 transition-all animate-fade-in-up">
+            <input type="text" placeholder="e.g., United States, London, Tokyo" class="w-full bg-stone-50 border border-stone-200 rounded-2xl px-6 py-5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-gold-500/10 focus:border-gold-500/30 transition-all shadow-sm" />
           </div>
         </div>
 
         <!-- Configuration Card: Audience -->
-        <div class="bg-[#1e293b] border border-gray-700 rounded-2xl p-6 transition-all focus-within:ring-2 focus-within:ring-purple-500/50">
-          <div class="flex items-start gap-4 mb-4">
-            <div class="p-2 bg-purple-500/10 rounded-lg text-purple-400 shrink-0">
-              <Users class="w-5 h-5" />
+        <div class="bg-white border border-stone-200 rounded-[32px] p-8 shadow-2xl premium-shadow relative overflow-hidden group">
+          <div class="flex items-start gap-6 border-b border-stone-100 pb-8 mb-8">
+            <div class="p-3 bg-stone-50 rounded-2xl text-slate-900 border border-stone-100 shadow-sm shrink-0">
+              <Users class="w-6 h-6" />
             </div>
             <div class="flex-1">
-              <h3 class="text-lg font-bold text-white mb-1">Target Audiences</h3>
-              <p class="text-sm text-gray-400 mb-4">Define who should see your ads. AI will map your Meta audiences to the best Google equivalents.</p>
-              
-              <div class="flex flex-col sm:flex-row gap-4">
-                <label class="flex-1 cursor-pointer">
-                  <input type="radio" value="ai" v-model="config.audience" class="peer sr-only" />
-                  <div class="p-4 rounded-xl border border-gray-700 bg-slate-900/50 peer-checked:border-purple-500 peer-checked:bg-purple-900/20 hover:border-purple-500/50 transition-all flex items-center justify-center gap-2">
-                    <Sparkles class="w-4 h-4 text-purple-400" />
-                    <span class="font-medium">Leave it to AI</span>
-                  </div>
-                </label>
-                <label class="flex-1 cursor-pointer">
-                  <input type="radio" value="manual" v-model="config.audience" class="peer sr-only" />
-                  <div class="p-4 rounded-xl border border-gray-700 bg-slate-900/50 peer-checked:border-purple-500 peer-checked:bg-purple-900/20 hover:border-purple-500/50 transition-all flex items-center justify-center">
-                    <span class="font-medium">Set Manually</span>
-                  </div>
-                </label>
-              </div>
-              
-              <div v-if="config.audience === 'manual'" class="mt-4 animate-fade-in-down">
-                <input type="text" placeholder="e.g., Plant Lovers, Home Decor, Ages 25-45" class="w-full bg-slate-900 border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-purple-500 transition-colors" />
-              </div>
+              <h3 class="text-xl font-extrabold text-slate-950 mb-1 tracking-tight">Audience Logic</h3>
+              <p class="text-sm font-medium text-slate-400">Define who your high-intent customers are.</p>
             </div>
+          </div>
+
+          <div class="grid sm:grid-cols-2 gap-4">
+             <label class="cursor-pointer group relative">
+              <input type="radio" value="ai" v-model="config.audience" class="sr-only" />
+              <div class="p-8 rounded-2xl border-4 transition-all duration-300 flex flex-col items-center gap-4 text-center overflow-hidden h-full"
+                   :class="config.audience === 'ai' ? 'border-gold-500 bg-white shadow-2xl scale-[1.02]' : 'border-transparent bg-stone-50/50 hover:border-gold-500/30'">
+                <div class="absolute top-4 right-4 transition-opacity duration-300"
+                     :class="config.audience === 'ai' ? 'opacity-100' : 'opacity-0'">
+                    <div class="w-6 h-6 bg-gold-500 rounded-full flex items-center justify-center shadow-lg">
+                        <Check class="w-4 h-4 text-white" />
+                    </div>
+                </div>
+                <div class="w-14 h-14 rounded-2xl shadow-lg flex items-center justify-center transition-all duration-500"
+                     :class="config.audience === 'ai' ? 'scale-110 bg-slate-950' : 'bg-white'">
+                  <Sparkles class="w-7 h-7 transition-colors duration-500" :class="config.audience === 'ai' ? 'text-white' : 'text-slate-950'" />
+                </div>
+                <div>
+                  <div class="font-black text-slate-950 text-base uppercase tracking-widest">AI Mapping</div>
+                  <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Dynamic interest clustering</div>
+                </div>
+              </div>
+            </label>
+
+             <label class="cursor-pointer group relative">
+              <input type="radio" value="manual" v-model="config.audience" class="sr-only" />
+              <div class="p-8 rounded-2xl border-4 transition-all duration-300 flex flex-col items-center gap-4 text-center overflow-hidden h-full"
+                   :class="config.audience === 'manual' ? 'border-gold-500 bg-white shadow-2xl scale-[1.02]' : 'border-transparent bg-stone-50/50 hover:border-gold-500/30'">
+                <div class="absolute top-4 right-4 transition-opacity duration-300"
+                     :class="config.audience === 'manual' ? 'opacity-100' : 'opacity-0'">
+                    <div class="w-6 h-6 bg-gold-500 rounded-full flex items-center justify-center shadow-lg">
+                        <Check class="w-4 h-4 text-white" />
+                    </div>
+                </div>
+                <div class="w-14 h-14 rounded-2xl shadow-lg flex items-center justify-center transition-all duration-500"
+                     :class="config.audience === 'manual' ? 'scale-110 bg-slate-950' : 'bg-white'">
+                  <Users class="w-7 h-7 transition-colors duration-500" :class="config.audience === 'manual' ? 'text-white' : 'text-slate-950'" />
+                </div>
+                <div>
+                  <div class="font-black text-slate-950 text-base uppercase tracking-widest">Custom Segments</div>
+                  <div class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-1">Manual demographic filters</div>
+                </div>
+              </div>
+            </label>
+          </div>
+          
+          <div v-if="config.audience === 'manual'" class="mt-8 transition-all animate-fade-in-up">
+            <input type="text" placeholder="e.g., Luxury buyers, Tech enthusiasts" class="w-full bg-stone-50 border border-stone-200 rounded-2xl px-6 py-5 text-sm font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-gold-500/10 focus:border-gold-500/30 transition-all shadow-sm" />
           </div>
         </div>
 
         <!-- Configuration Card: Intent -->
-        <div class="bg-[#1e293b] border border-gray-700 rounded-2xl p-6 transition-all focus-within:ring-2 focus-within:ring-pink-500/50">
-          <div class="flex items-start gap-4 mb-4">
-            <div class="p-2 bg-pink-500/10 rounded-lg text-pink-400 shrink-0">
-              <Target class="w-5 h-5" />
+        <div class="bg-white border border-stone-200 rounded-[32px] p-8 shadow-2xl premium-shadow relative overflow-hidden group">
+          <div class="flex items-start gap-6 border-b border-stone-100 pb-8 mb-8">
+            <div class="p-3 bg-stone-50 rounded-2xl text-slate-900 border border-stone-100 shadow-sm shrink-0">
+              <Target class="w-6 h-6" />
             </div>
             <div class="flex-1">
-              <h3 class="text-lg font-bold text-white mb-1">Intent Type</h3>
-              <p class="text-sm text-gray-400 mb-4">How should we target keywords? Broad match for reach, or exact match for precision.</p>
-              
-              <div class="flex flex-col sm:flex-row gap-4">
-                <label class="flex-1 cursor-pointer">
-                  <input type="radio" value="ai" v-model="config.intent" class="peer sr-only" />
-                  <div class="p-4 rounded-xl border border-gray-700 bg-slate-900/50 peer-checked:border-pink-500 peer-checked:bg-pink-900/20 hover:border-pink-500/50 transition-all flex items-center justify-center gap-2">
-                    <Sparkles class="w-4 h-4 text-pink-400" />
-                    <span class="font-medium">Leave it to AI</span>
-                  </div>
-                </label>
-                <label class="flex-1 cursor-pointer">
-                  <input type="radio" value="broad" v-model="config.intent" class="peer sr-only" />
-                  <div class="p-4 rounded-xl border border-gray-700 bg-slate-900/50 peer-checked:border-pink-500 peer-checked:bg-pink-900/20 hover:border-pink-500/50 transition-all flex items-center justify-center">
-                    <span class="font-medium">Broad (Reach)</span>
-                  </div>
-                </label>
-                <label class="flex-1 cursor-pointer">
-                  <input type="radio" value="exact" v-model="config.intent" class="peer sr-only" />
-                  <div class="p-4 rounded-xl border border-gray-700 bg-slate-900/50 peer-checked:border-pink-500 peer-checked:bg-pink-900/20 hover:border-pink-500/50 transition-all flex items-center justify-center">
-                    <span class="font-medium">Exact (Precision)</span>
-                  </div>
-                </label>
-              </div>
+              <h3 class="text-xl font-extrabold text-slate-950 mb-1 tracking-tight">Market Intent</h3>
+              <p class="text-sm font-medium text-slate-400">Optimize for reach or conversion precision.</p>
             </div>
+          </div>
+
+          <div class="grid sm:grid-cols-3 gap-4">
+             <label class="cursor-pointer group relative">
+              <input type="radio" value="ai" v-model="config.intent" class="sr-only" />
+              <div class="p-6 rounded-2xl border-4 transition-all duration-300 flex flex-col items-center text-center relative overflow-hidden h-full"
+                   :class="config.intent === 'ai' ? 'border-gold-500 bg-white shadow-xl scale-[1.02]' : 'border-transparent bg-stone-50/50 hover:border-gold-500/30'">
+                <div class="absolute top-2 right-2 transition-opacity duration-300"
+                     :class="config.intent === 'ai' ? 'opacity-100' : 'opacity-0'">
+                    <Check class="w-4 h-4 text-gold-500" />
+                </div>
+                <Sparkles class="w-6 h-6 mb-2 transition-colors duration-300" 
+                          :class="config.intent === 'ai' ? 'text-gold-500' : 'text-slate-400'" />
+                <span class="font-black text-[10px] uppercase tracking-[0.1em] transition-colors duration-300"
+                      :class="config.intent === 'ai' ? 'text-slate-950' : 'text-slate-400'">Dynamic AI</span>
+              </div>
+            </label>
+
+            <label class="cursor-pointer group relative">
+              <input type="radio" value="broad" v-model="config.intent" class="sr-only" />
+              <div class="p-6 rounded-2xl border-4 transition-all duration-300 flex flex-col items-center text-center relative overflow-hidden h-full"
+                   :class="config.intent === 'broad' ? 'border-gold-500 bg-white shadow-xl scale-[1.02]' : 'border-transparent bg-stone-50/50 hover:border-gold-500/30'">
+                <div class="absolute top-2 right-2 transition-opacity duration-300"
+                     :class="config.intent === 'broad' ? 'opacity-100' : 'opacity-0'">
+                    <Check class="w-4 h-4 text-gold-500" />
+                </div>
+                <Target class="w-6 h-6 mb-2 transition-colors duration-300" 
+                        :class="config.intent === 'broad' ? 'text-gold-500' : 'text-slate-400'" />
+                <span class="font-black text-[10px] uppercase tracking-[0.1em] transition-colors duration-300"
+                      :class="config.intent === 'broad' ? 'text-slate-950' : 'text-slate-400'">Broad Match</span>
+              </div>
+            </label>
+
+            <label class="cursor-pointer group relative">
+              <input type="radio" value="exact" v-model="config.intent" class="sr-only" />
+              <div class="p-6 rounded-2xl border-4 transition-all duration-300 flex flex-col items-center text-center relative overflow-hidden h-full"
+                   :class="config.intent === 'exact' ? 'border-gold-500 bg-white shadow-xl scale-[1.02]' : 'border-transparent bg-stone-50/50 hover:border-gold-500/30'">
+                <div class="absolute top-2 right-2 transition-opacity duration-300"
+                     :class="config.intent === 'exact' ? 'opacity-100' : 'opacity-0'">
+                    <Check class="w-4 h-4 text-gold-500" />
+                </div>
+                <Rocket class="w-6 h-6 mb-2 transition-colors duration-300" 
+                        :class="config.intent === 'exact' ? 'text-gold-500' : 'text-slate-400'" />
+                <span class="font-black text-[10px] uppercase tracking-[0.1em] transition-colors duration-300"
+                      :class="config.intent === 'exact' ? 'text-slate-950' : 'text-slate-400'">Exact Match</span>
+              </div>
+            </label>
           </div>
         </div>
 
       </div>
 
-      <div class="mt-12 flex justify-center">
+      <div class="mt-20 flex justify-center pb-20 animate-fade-in-up" style="animation-delay: 0.2s">
         <button 
-          @click="handleGenerate"
+          @click="handleGenerate" 
           :disabled="isGenerating"
-          class="px-10 py-5 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-500 hover:to-purple-500 disabled:opacity-50 text-white text-xl font-bold rounded-2xl shadow-xl shadow-blue-900/20 transition-all transform hover:-translate-y-1 active:translate-y-0 flex items-center gap-4 relative overflow-hidden group"
+          class="px-12 py-6 bg-slate-950 hover:bg-slate-900 disabled:opacity-50 text-white font-black rounded-[24px] shadow-2xl shadow-slate-900/20 transition-all transform hover:scale-[1.02] active:scale-95 flex items-center gap-4 relative overflow-hidden group/btn"
         >
-          <div class="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-          <Rocket class="w-6 h-6" />
-          <span>{{ isGenerating ? 'Preparing...' : 'Generate Draft' }}</span>
-          <ChevronRight class="w-6 h-6 group-hover:translate-x-1 transition-transform" />
+          <div class="absolute inset-0 bg-gold-500/10 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-500"></div>
+          <Rocket class="w-6 h-6 text-gold-500" />
+          <span class="text-lg uppercase tracking-[0.1em] relative z-10">{{ isGenerating ? 'Computing...' : 'Generate Campaign Model' }}</span>
+          <ChevronRight class="w-6 h-6 group-hover/btn:translate-x-1 transition-transform relative z-10" />
         </button>
       </div>
     </main>
   </div>
 </template>
-
-<style scoped>
-.animate-fade-in-down {
-  animation: fade-in-down 0.3s ease-out;
-}
-@keyframes fade-in-down {
-  0% { opacity: 0; transform: translateY(-10px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-</style>

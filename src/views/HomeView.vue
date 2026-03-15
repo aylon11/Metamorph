@@ -7,21 +7,21 @@ const router = useRouter()
 </script>
 
 <template>
-  <div class="min-h-screen bg-[#0f172a] text-white font-sans overflow-x-hidden selection:bg-purple-500/30">
+  <div class="min-h-screen bg-stone-50 text-slate-900 font-sans overflow-x-hidden selection:bg-gold-500/20">
     <!-- Navbar -->
-    <nav class="fixed top-0 w-full z-50 bg-[#0f172a]/80 backdrop-blur-md border-b border-gray-800">
+    <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-stone-200">
       <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
-           <Logo />
-           <span class="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400">Metamorph</span>
+           <Logo size="w-7 h-7" />
+           <span class="text-xl font-extrabold tracking-tight text-slate-900">Metamorph</span>
         </div>
-        <div class="flex items-center gap-4">
-          <button @click="router.push('/connect')" class="text-sm font-medium text-gray-300 hover:text-white transition-colors">
+        <div class="flex items-center gap-6">
+          <button @click="router.push('/connect')" class="text-sm font-semibold text-slate-600 hover:text-slate-950 transition-colors">
             Sign In
           </button>
           <button 
             @click="router.push('/connect')"
-            class="text-sm font-bold bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded-lg transition-all shadow-lg shadow-blue-500/20"
+            class="text-sm font-bold bg-slate-900 hover:bg-slate-800 text-white px-5 py-2.5 rounded-xl transition-all shadow-lg shadow-slate-900/10"
           >
             Get Started
           </button>
@@ -31,72 +31,78 @@ const router = useRouter()
 
     <!-- Hero Section -->
     <main class="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
-      <!-- Background Glows -->
-      <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] bg-blue-600/20 blur-[120px] rounded-full pointer-events-none"></div>
-      <div class="absolute top-1/3 left-1/4 w-[600px] h-[400px] bg-purple-600/20 blur-[100px] rounded-full pointer-events-none"></div>
+      <!-- Background Decorative Elements -->
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] pointer-events-none opacity-40">
+        <div class="absolute top-[-100px] left-[-100px] w-[500px] h-[500px] bg-blue-100 blur-[120px] rounded-full"></div>
+        <div class="absolute top-[200px] right-[-100px] w-[400px] h-[400px] bg-gold-100 blur-[100px] rounded-full"></div>
+      </div>
 
       <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
-        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-sm font-medium mb-8 animate-fade-in-up" style="animation-delay: 0.1s">
-          <Zap class="w-4 h-4" /> Seamless AI-Powered Migration
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-stone-200 text-slate-600 text-sm font-medium mb-8 animate-fade-in-up shadow-sm">
+          <span class="flex h-2 w-2 rounded-full bg-gold-500 animate-pulse shrink-0 shadow-[0_0_8px_rgba(202,138,4,0.4)]"></span>
+          Powered by Gemini
         </div>
 
-        <h1 class="text-7xl md:text-9xl font-black tracking-tighter mb-4 animate-fade-in-up" style="animation-delay: 0.2s">
-          <span class="bg-gradient-to-r from-blue-400 via-purple-400 to-pink-400 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.4)]">Metamorph</span>
+        <h1 class="text-6xl md:text-8xl font-black tracking-tighter mb-6 animate-fade-in-up">
+          <span class="text-slate-950">Metamorph</span>
         </h1>
 
-        <h2 class="text-3xl md:text-5xl font-bold tracking-tight mb-6 animate-fade-in-up leading-tight text-gray-100" style="animation-delay: 0.3s">
-          Expand to Google Ads in One Click
+        <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-8 animate-fade-in-up leading-tight text-slate-900">
+          Expand to Google Ads <span class="text-gold-500">in One Click</span>
         </h2>
 
-        <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto mb-10 animate-fade-in-up leading-relaxed" style="animation-delay: 0.4s">
-          Instantly deploy highly optimized Google Ads campaigns based on your existing, top-performing Meta campaigns. Quickly expand your business and generate new growth automatically.
+        <p class="text-xl text-slate-600 max-w-2xl mx-auto mb-12 animate-fade-in-up leading-relaxed">
+          Instantly deploy highly optimized Google Ads campaigns based on your existing, top-performing Meta campaigns. Scale your business automatically.
         </p>
 
-        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up" style="animation-delay: 0.5s">
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-in-up mb-20">
           <button 
             @click="router.push('/connect')"
-            class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-blue-600 rounded-xl overflow-hidden transition-all duration-300 hover:bg-blue-500 hover:scale-[1.02] shadow-[0_0_40px_-10px_rgba(37,99,235,0.5)] w-full sm:w-auto"
+            class="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-white bg-slate-900 rounded-2xl overflow-hidden transition-all duration-300 hover:bg-slate-800 hover:scale-[1.02] shadow-xl shadow-slate-900/10 w-full sm:w-auto"
           >
             <span class="relative z-10 flex items-center gap-2">
               Connect Meta Account
               <ArrowRight class="w-5 h-5 transition-transform group-hover:translate-x-1" />
             </span>
           </button>
-          <div class="text-sm text-gray-500 flex items-center gap-2">
-            <CheckCircle class="w-4 h-4 text-green-500" /> No credit card required
+          <div class="text-xs font-bold text-slate-400 flex items-center gap-2 uppercase tracking-widest">
+            <CheckCircle class="w-4 h-4 text-green-500" /> Professional Grade AI
           </div>
         </div>
 
         <!-- Dashboard mockup preview -->
-        <div class="mt-20 relative mx-auto max-w-5xl animate-fade-in-up hidden md:block" style="animation-delay: 0.7s">
-          <div class="absolute inset-0 bg-gradient-to-t from-[#0f172a] via-transparent to-transparent z-10"></div>
-          <div class="rounded-t-2xl border border-gray-800 bg-[#1e293b] p-2 shadow-2xl relative overflow-hidden">
+        <div class="relative mx-auto max-w-5xl animate-fade-in-up hidden md:block group">
+          <div class="absolute -inset-4 bg-gradient-to-tr from-gold-500/10 to-blue-500/10 rounded-[32px] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+          <div class="rounded-2xl border border-stone-200 bg-white p-3 shadow-2xl relative overflow-hidden glass-card">
              <!-- Mock UI Header -->
-             <div class="flex items-center gap-2 mb-4 px-4 pt-2">
-               <div class="w-3 h-3 rounded-full bg-red-500/80"></div>
-               <div class="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-               <div class="w-3 h-3 rounded-full bg-green-500/80"></div>
+             <div class="flex items-center justify-between mb-4 px-4 pt-2 border-b border-stone-100 pb-3">
+               <div class="flex gap-2">
+                <div class="w-3 h-3 rounded-full bg-stone-200"></div>
+                <div class="w-3 h-3 rounded-full bg-stone-200"></div>
+                <div class="w-3 h-3 rounded-full bg-stone-200"></div>
+               </div>
+               <div class="h-2 w-32 bg-stone-100 rounded-full"></div>
              </div>
              <!-- Mock UI Content -->
-             <div class="grid grid-cols-3 gap-4 px-4 pb-4">
-                <div class="col-span-1 border border-gray-700 rounded-xl p-4 bg-slate-900/50">
-                  <div class="h-4 w-1/3 bg-gray-700 rounded mb-4"></div>
-                  <div class="space-y-3">
-                    <div class="flex gap-2"><div class="w-8 h-8 rounded bg-blue-500/20 shrink-0"></div><div class="flex-1 space-y-2"><div class="h-3 bg-gray-700/50 rounded w-full"></div><div class="h-3 bg-gray-700/50 rounded w-2/3"></div></div></div>
-                    <div class="flex gap-2"><div class="w-8 h-8 rounded bg-purple-500/20 shrink-0"></div><div class="flex-1 space-y-2"><div class="h-3 bg-gray-700/50 rounded w-full"></div><div class="h-3 bg-gray-700/50 rounded w-1/2"></div></div></div>
+             <div class="grid grid-cols-3 gap-6 px-4 pb-4">
+                <div class="col-span-1 border border-stone-100 rounded-2xl p-4 bg-stone-50/50">
+                  <div class="h-3 w-1/2 bg-stone-200 rounded mb-6"></div>
+                  <div class="space-y-4">
+                    <div class="flex gap-3"><div class="w-10 h-10 rounded-xl bg-blue-500/10 shrink-0"></div><div class="flex-1 space-y-2 py-1"><div class="h-2 bg-stone-200 rounded w-full"></div><div class="h-2 bg-stone-200 rounded w-2/3"></div></div></div>
+                    <div class="flex gap-3"><div class="w-10 h-10 rounded-xl bg-gold-500/10 shrink-0"></div><div class="flex-1 space-y-2 py-1"><div class="h-2 bg-stone-200 rounded w-full"></div><div class="h-2 bg-stone-200 rounded w-1/2"></div></div></div>
                   </div>
                 </div>
-                <div class="col-span-2 border border-gray-700 rounded-xl p-4 bg-slate-900/50 flex flex-col justify-center items-center relative overflow-hidden">
-                   <div class="absolute right-0 top-0 w-32 h-32 bg-pink-500/10 blur-3xl"></div>
-                   <div class="w-full max-w-md bg-white rounded-lg p-4 shadow-xl mb-4 relative z-10 opacity-90 transform scale-95 border-l-4 border-blue-500">
-                      <div class="flex items-center gap-2 mb-2">
-                        <div class="font-bold text-xs text-blue-800 uppercase">Google Ad Preview</div>
+                <div class="col-span-2 border border-stone-100 rounded-2xl p-6 bg-stone-50/50 flex flex-col justify-center items-center relative overflow-hidden">
+                   <div class="absolute right-[-20px] top-[-20px] w-40 h-40 bg-gold-200/20 blur-3xl"></div>
+                   <div class="w-full max-w-sm bg-white rounded-xl p-5 shadow-xl mb-6 relative z-10 border border-stone-100 group-hover:translate-y-[-4px] transition-transform duration-500">
+                      <div class="flex items-center gap-2 mb-3">
+                        <div class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-stone-100 text-stone-500 uppercase tracking-wider">Preview</div>
                       </div>
-                      <div class="text-[#1a0dab] font-medium text-lg mb-1 line-clamp-1">Urban Roots | Buy Rare Indoor Plants Online</div>
-                      <div class="text-gray-600 text-sm line-clamp-2">Shop our exclusive collection of rare Philodendrons. Hand-picked, healthy plants delivered to your door.</div>
+                      <div class="text-[#1a0dab] font-bold text-lg mb-2 line-clamp-1">Urban Roots | Shop Rare Indoor Plants</div>
+                      <div class="text-slate-600 text-sm line-clamp-2 leading-relaxed">Shop our exclusive collection of rare Philodendrons. Healthy plants delivered to your door.</div>
                    </div>
-                   <div class="px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-500 text-white rounded-lg text-sm font-bold shadow-lg z-10 flex items-center gap-2">
-                      <Zap class="w-4 h-4" /> Deploy to Google Ads
+                   <div class="px-8 py-3 bg-slate-900 text-white rounded-xl text-sm font-bold shadow-xl z-10 flex items-center gap-2 hover:bg-slate-800 transition-colors cursor-pointer">
+                      <Zap class="w-4 h-4 text-gold-500" /> Deploy to Google Ads
                    </div>
                 </div>
              </div>
@@ -106,43 +112,43 @@ const router = useRouter()
     </main>
 
     <!-- Features Section -->
-    <section class="py-24 bg-[#111827] relative border-t border-gray-800">
+    <section class="py-24 bg-white relative border-t border-stone-200">
       <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-16">
-          <h2 class="text-3xl md:text-5xl font-bold mb-4">From Meta to Google in Seconds</h2>
-          <p class="text-gray-400 text-lg max-w-2xl mx-auto">Our AI analyzes your Facebook and Instagram success and instantly translates it into a high-converting Google Ads strategy.</p>
+        <div class="text-center mb-20">
+          <h2 class="text-4xl md:text-5xl font-black mb-6 tracking-tight text-slate-950">From Meta to Google in Seconds</h2>
+          <p class="text-slate-500 text-lg max-w-2xl mx-auto">Our AI analyzes your Facebook and Instagram success and instantly translates it into a high-converting Google Ads strategy.</p>
         </div>
 
-        <div class="grid md:grid-cols-3 gap-8">
+        <div class="grid md:grid-cols-3 gap-10">
           <!-- Feature 1 -->
-          <div class="bg-[#1e293b] border border-gray-800 p-8 rounded-2xl hover:border-blue-500/50 transition-colors group">
-            <div class="w-14 h-14 bg-blue-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <RefreshCw class="w-7 h-7 text-blue-400" />
+          <div class="bg-stone-50/50 border border-stone-100 p-10 rounded-3xl hover:border-gold-500/30 transition-all group hover:bg-white hover:shadow-2xl hover:shadow-stone-200/50">
+            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm border border-stone-100 group-hover:scale-110 group-hover:rotate-3 transition-transform">
+              <RefreshCw class="w-8 h-8 text-blue-500" />
             </div>
-            <h3 class="text-xl font-bold mb-3">AI Asset Extraction</h3>
-            <p class="text-gray-400 leading-relaxed">
+            <h3 class="text-2xl font-bold mb-4 text-slate-900">AI Asset Extraction</h3>
+            <p class="text-slate-500 leading-relaxed text-lg">
               Connect your Meta account. We automatically find your best-performing images, copy, and audience data to fuel your new campaigns.
             </p>
           </div>
 
           <!-- Feature 2 -->
-          <div class="bg-[#1e293b] border border-gray-800 p-8 rounded-2xl hover:border-purple-500/50 transition-colors group">
-            <div class="w-14 h-14 bg-purple-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <Smartphone class="w-7 h-7 text-purple-400" />
+          <div class="bg-stone-50/50 border border-stone-100 p-10 rounded-3xl hover:border-gold-500/30 transition-all group hover:bg-white hover:shadow-2xl hover:shadow-stone-200/50">
+            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm border border-stone-100 group-hover:scale-110 group-hover:-rotate-3 transition-transform">
+              <Smartphone class="w-8 h-8 text-gold-500" />
             </div>
-            <h3 class="text-xl font-bold mb-3">Instant Landing Pages</h3>
-            <p class="text-gray-400 leading-relaxed">
-              We generate lightning-fast, conversion-optimized target pages tailored exactly to your extracted assets, maximizing your Google Quality Score.
+            <h3 class="text-2xl font-bold mb-4 text-slate-900">Instant Landing Pages</h3>
+            <p class="text-slate-500 leading-relaxed text-lg">
+              We generate lightning-fast, conversion-optimized target pages tailored exactly to your extracted assets, maximizing your Quality Score.
             </p>
           </div>
 
           <!-- Feature 3 -->
-          <div class="bg-[#1e293b] border border-gray-800 p-8 rounded-2xl hover:border-pink-500/50 transition-colors group">
-            <div class="w-14 h-14 bg-pink-500/10 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-              <TrendingUp class="w-7 h-7 text-pink-400" />
+          <div class="bg-stone-50/50 border border-stone-100 p-10 rounded-3xl hover:border-gold-500/30 transition-all group hover:bg-white hover:shadow-2xl hover:shadow-stone-200/50">
+            <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm border border-stone-100 group-hover:scale-110 group-hover:rotate-3 transition-transform">
+              <TrendingUp class="w-8 h-8 text-slate-900" />
             </div>
-            <h3 class="text-xl font-bold mb-3">One-Click Deployment</h3>
-            <p class="text-gray-400 leading-relaxed">
+            <h3 class="text-2xl font-bold mb-4 text-slate-900">One-Click Deployment</h3>
+            <p class="text-slate-500 leading-relaxed text-lg">
               Review your structurally mapped Google Ads campaigns, adjust your budget with built-in ROI forecasting, and launch with a single click.
             </p>
           </div>
@@ -151,19 +157,21 @@ const router = useRouter()
     </section>
 
     <!-- Footer -->
-    <footer class="bg-[#0f172a] border-t border-gray-800 py-12">
-      <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
-        <div class="flex items-center gap-2 grayscale opacity-50">
-           <Logo />
-           <span class="text-xl font-bold">Metamorph</span>
-        </div>
-        <div class="text-gray-500 text-sm">
-          &copy; {{ new Date().getFullYear() }} Metamorph. All rights reserved.
-        </div>
-        <div class="flex gap-6 text-sm text-gray-500">
-          <a href="#" class="hover:text-white transition-colors">Privacy</a>
-          <a href="#" class="hover:text-white transition-colors">Terms</a>
-          <a href="#" class="hover:text-white transition-colors">Contact</a>
+    <footer class="bg-white border-t border-stone-200 py-16">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="flex flex-col md:flex-row justify-between items-center gap-10">
+          <div class="flex items-center gap-3">
+             <Logo size="w-8 h-8" />
+             <span class="text-xl font-black tracking-tight text-slate-900">Metamorph</span>
+          </div>
+          <div class="flex gap-10 text-sm font-bold text-slate-400 uppercase tracking-widest">
+            <a href="#" class="hover:text-gold-500 transition-colors">Privacy</a>
+            <a href="#" class="hover:text-gold-500 transition-colors">Terms</a>
+            <a href="#" class="hover:text-gold-500 transition-colors">Contact</a>
+          </div>
+          <div class="text-slate-400 text-sm font-medium">
+            &copy; {{ new Date().getFullYear() }} Metamorph. All rights reserved.
+          </div>
         </div>
       </div>
     </footer>
@@ -173,13 +181,13 @@ const router = useRouter()
 <style scoped>
 .animate-fade-in-up {
   opacity: 0;
-  animation: fadeInUp 0.8s ease-out forwards;
+  animation: fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;

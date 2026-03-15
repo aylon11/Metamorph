@@ -1,21 +1,47 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+@theme {
+  --color-stone-50: #FAFAF9;
+  --color-stone-100: #F5F5F4;
+  --color-stone-200: #E7E5E4;
+  --color-stone-300: #D6D3D1;
+  --color-stone-400: #A8A29E;
+  --color-stone-500: #78716C;
+  --color-slate-900: #0F172A;
+  --color-slate-950: #020617;
+  --color-gold-500: #CA8A04;
+  --color-gold-600: #A16207;
+}
 :root {
-  --font-outfit: 'Outfit', sans-serif;
-  font-family: var(--font-outfit);
+  --font-dm-sans: 'DM Sans', sans-serif;
+    font-family: var(--font-dm-sans);
 }
 
 body {
-  @apply bg-gray-50 text-gray-900 antialiased;
+  @apply bg-stone-50 text-slate-900 antialiased;
+  }
+  
+  /* Premium Utilities */
+  .glass-card {
+    @apply bg-white/70 backdrop-blur-md border border-white/20 shadow-xl;
+  }
+  
+  .premium-shadow {
+    box-shadow:
+      0 4px 6px -1px rgba(0, 0, 0, 0.05),
+      0 10px 15px -3px rgba(0, 0, 0, 0.03),
+      0 20px 25px -5px rgba(0, 0, 0, 0.02);
+  }
+  
+  .gold-gradient {
+    @apply bg-gradient-to-br from-gold-500 to-gold-600;
 }
 
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(10px);
-  }
-
+    transform: translateY(20px);
   to {
     opacity: 1;
     transform: translateY(0);
@@ -23,15 +49,18 @@ body {
 }
 
 .animate-fade-in-up {
-  animation: fadeInUp 0.5s ease-out forwards;
+  opacity: 0;
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes slideRight {
   from {
     transform: translateX(-100%);
-  }
-
+  
   to {
     transform: translateX(0);
   }
+}
+.animate-slide-right {
+  animation: slideRight 2.5s linear forwards;
 }

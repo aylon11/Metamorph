@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { extractedAssets } from '../data/mockData'
-import { ShoppingBag, Star, Menu, Instagram, Facebook } from 'lucide-vue-next'
+import { ShoppingBag, Star, Menu, Instagram, Facebook, Sparkles, Layers, Layout, Rocket } from 'lucide-vue-next'
 
 const isLoading = ref(true)
 
@@ -16,34 +16,60 @@ onMounted(() => {
   <div class="min-h-screen bg-stone-50 font-serif text-stone-800">
     <!-- Loading Overlay (Metamorph Style) -->
     <transition name="fade">
-      <div v-if="isLoading" class="fixed inset-0 z-[100] bg-[#0f172a] text-white font-sans flex flex-col items-center justify-center p-4 text-center overflow-hidden">
+      <div v-if="isLoading" class="fixed inset-0 z-[100] bg-stone-50 text-slate-900 font-sans flex flex-col items-center justify-center p-4 text-center overflow-hidden">
         <!-- Background Ambient Effects -->
-        <div class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/20 rounded-full blur-[120px] animate-pulse"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/20 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-gold-500/10 rounded-full blur-[120px] animate-pulse"></div>
+            <div class="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-slate-900/5 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+        </div>
         
-        <div class="relative z-10 flex flex-col items-center">
-            <!-- Central Animation -->
-            <div class="relative w-40 h-40 mb-10 flex items-center justify-center">
-              <!-- Outer Rings -->
-              <div class="absolute inset-0 border border-blue-500/30 rounded-full animate-[spin_10s_linear_infinite]"></div>
-              <div class="absolute inset-4 border border-purple-500/30 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+        <div class="relative z-10 flex flex-col items-center max-w-lg w-full">
+            <!-- Central Animation Hub -->
+            <div class="relative w-64 h-64 mb-12 flex items-center justify-center">
+              <!-- Geometric Rings -->
+              <div class="absolute inset-0 border border-gold-500/20 rounded-full animate-[spin_20s_linear_infinite]"></div>
+              <div class="absolute inset-8 border border-slate-950/5 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
+              <div class="absolute inset-16 border-2 border-dashed border-gold-500/10 rounded-full animate-[spin_30s_linear_infinite]"></div>
               
-              <!-- Glowing Morphing Core -->
-              <div class="w-20 h-20 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-full blur-md animate-pulse shadow-[0_0_50px_rgba(139,92,246,0.5)]"></div>
+              <!-- Core -->
+              <div class="w-32 h-32 bg-white rounded-[40px] shadow-2xl premium-shadow border border-stone-100 flex items-center justify-center relative z-10 group overflow-hidden">
+                  <div class="absolute inset-0 bg-gradient-to-br from-gold-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <Sparkles class="w-12 h-12 text-slate-950 animate-pulse" />
+              </div>
 
-              <!-- Icon Overlay -->
-              <div class="absolute inset-0 flex items-center justify-center">
-                  <span class="text-3xl drop-shadow-lg">✨</span>
+              <!-- Orbiting Particles -->
+              <div class="absolute inset-0 animate-[spin_8s_linear_infinite]">
+                  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-gold-500 rounded-full shadow-[0_0_15px_rgba(202,138,4,0.5)]"></div>
               </div>
             </div>
 
-            <div class="space-y-3">
-              <h2 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-200 via-white to-purple-200">
-                Generating your personalized landing page with Gemini
+            <div class="space-y-6 text-center">
+              <h2 class="text-3xl font-black text-slate-950 tracking-tighter uppercase italic">
+                Generating Landing Page
               </h2>
-              <p class="text-sm text-blue-300/80 font-mono">
-                > Designing layout • Adapting existing assets • Optimizing conversion paths<span class="animate-pulse">_</span>
-              </p>
+              <div class="flex flex-col items-center gap-3">
+                  <p class="text-lg text-slate-500 font-medium leading-relaxed">
+                    Adapting assets with Gemini • Optimizing layout
+                  </p>
+                  <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-2xl shadow-sm border border-stone-200">
+                    <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2 py-1 bg-stone-50 rounded-lg">AI Engine Active</span>
+                  </div>
+              </div>
+            </div>
+
+            <!-- Simple Progress Readout -->
+            <div class="mt-12 w-full max-w-sm">
+                <div class="bg-white border border-stone-200 rounded-2xl p-6 shadow-xl premium-shadow flex items-center justify-between">
+                    <div class="flex items-center gap-4 text-left">
+                        <div class="w-10 h-10 bg-stone-50 rounded-xl flex items-center justify-center border border-stone-100">
+                            <Layout class="w-5 h-5 text-gold-600" />
+                        </div>
+                        <div>
+                            <div class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Status</div>
+                            <div class="text-xs font-black text-slate-900 uppercase">Personalizing Experience</div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
       </div>
