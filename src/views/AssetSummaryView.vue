@@ -26,12 +26,12 @@ const handleSubmitUrl = () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-stone-50 text-slate-900 font-sans flex flex-col selection:bg-gold-500/20">
+  <div class="min-h-screen bg-stone-50 text-slate-900 font-sans flex flex-col selection:bg-emerald-500/20">
     <!-- Navbar -->
     <nav class="bg-white border-b border-stone-200 sticky top-0 z-50">
       <div class="w-full px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
-           <Logo size="w-7 h-7" />
+           <Logo size="w-8 h-8" />
            <span class="text-xl font-extrabold tracking-tight">Metamorph</span>
         </div>
         <div class="px-4 py-1.5 bg-green-50 border border-green-100 rounded-full text-[10px] font-black text-green-600 uppercase tracking-widest flex items-center gap-2">
@@ -47,7 +47,7 @@ const handleSubmitUrl = () => {
       <div class="space-y-12 animate-fade-in-up">
         <div class="space-y-6">
            <div class="flex items-center gap-4">
-              <div class="p-3 bg-white rounded-2xl shadow-xl border border-stone-100 text-gold-500 premium-shadow">
+              <div class="p-3 bg-white rounded-2xl shadow-xl border border-stone-100 text-emerald-500 premium-shadow">
                 <Sparkles class="w-8 h-8" />
               </div>
               <h2 class="text-4xl font-black text-slate-950 tracking-tight">Assets Harvested</h2>
@@ -67,8 +67,8 @@ const handleSubmitUrl = () => {
                  <span class="text-[9px] text-slate-400 uppercase tracking-widest font-black mt-1">Images</span>
              </div>
              <div class="bg-white border border-stone-100 p-6 rounded-[24px] flex flex-col items-center justify-center text-center shadow-lg premium-shadow group hover:translate-y-[-4px] transition-transform">
-                 <div class="p-2 bg-gold-50 rounded-xl mb-3 group-hover:bg-gold-100 transition-colors">
-                  <Type class="w-6 h-6 text-gold-500" />
+                 <div class="p-2 bg-emerald-50 rounded-xl mb-3 group-hover:bg-emerald-100 transition-colors">
+                  <Type class="w-6 h-6 text-emerald-500" />
                  </div>
                  <span class="text-3xl font-black text-slate-950 tracking-tighter">8</span>
                  <span class="text-[9px] text-slate-400 uppercase tracking-widest font-black mt-1">Headlines</span>
@@ -97,7 +97,7 @@ const handleSubmitUrl = () => {
              </div>
 
             <div class="flex flex-wrap gap-2 pt-4">
-               <span v-for="(copy, i) in extractedAssets.headlines" :key="i" class="px-4 py-2 bg-white border border-stone-100 text-slate-600 font-bold rounded-xl text-sm shadow-sm hover:border-gold-500/30 transition-colors cursor-default select-none">
+               <span v-for="(copy, i) in extractedAssets.headlines" :key="i" class="px-4 py-2 bg-white border border-stone-100 text-slate-600 font-bold rounded-xl text-sm shadow-sm hover:border-emerald-500/30 transition-colors cursor-default select-none">
                  "{{ copy }}"
                </span>
             </div>
@@ -106,7 +106,7 @@ const handleSubmitUrl = () => {
 
       <!-- Right: Action Card -->
       <div class="bg-slate-950 rounded-[40px] p-1.5 shadow-2xl relative overflow-hidden group animate-fade-in-up shadow-slate-900/40" style="animation-delay: 0.1s">
-        <div class="absolute inset-0 bg-gradient-to-br from-gold-500/20 to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent"></div>
         
         <div class="bg-slate-950 rounded-[38px] p-10 relative z-10 h-full flex flex-col">
             <div class="space-y-8 flex-1">
@@ -128,19 +128,19 @@ const handleSubmitUrl = () => {
               <div class="space-y-4 pt-4">
                   <div class="flex items-center gap-4 text-sm font-bold text-slate-300">
                       <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center border border-white/5 shrink-0">
-                          <CheckCircle class="w-4 h-4 text-gold-500" />
+                          <CheckCircle class="w-4 h-4 text-emerald-500" />
                       </div>
                       <span>Matches Meta brand imagery 1:1</span>
                   </div>
                   <div class="flex items-center gap-4 text-sm font-bold text-slate-300">
                       <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center border border-white/5 shrink-0">
-                          <CheckCircle class="w-4 h-4 text-gold-500" />
+                          <CheckCircle class="w-4 h-4 text-emerald-500" />
                       </div>
                       <span>Maximized Quality Score potential</span>
                   </div>
                    <div class="flex items-center gap-4 text-sm font-bold text-slate-300">
                       <div class="w-8 h-8 rounded-xl bg-white/10 flex items-center justify-center border border-white/5 shrink-0">
-                          <CheckCircle class="w-4 h-4 text-gold-500" />
+                          <CheckCircle class="w-4 h-4 text-emerald-500" />
                       </div>
                       <span>Mobile-First dynamic scaling</span>
                   </div>
@@ -154,7 +154,7 @@ const handleSubmitUrl = () => {
               >
                 <Layout class="w-6 h-6 px-0.5" />
                 <span class="uppercase tracking-widest">Generate Landing Page</span>
-                <ArrowRight class="w-6 h-6 text-gold-500 group-hover/btn:translate-x-2 transition-transform" />
+                <ArrowRight class="w-6 h-6 text-emerald-500 group-hover/btn:translate-x-2 transition-transform" />
               </button>
               
               <div class="flex items-center gap-6 px-10">
@@ -170,7 +170,7 @@ const handleSubmitUrl = () => {
                     v-model="manualUrl"
                     type="url"
                     placeholder="https://yourwebsite.com/landing"
-                    class="w-full flex-1 py-4 px-5 bg-white/5 border border-white/10 rounded-2xl text-white outline-none focus:border-gold-500/50 focus:ring-4 focus:ring-gold-500/10 transition-all text-sm font-bold placeholder:text-slate-600"
+                    class="w-full flex-1 py-4 px-5 bg-white/5 border border-white/10 rounded-2xl text-white outline-none focus:border-emerald-500/50 focus:ring-4 focus:ring-emerald-500/10 transition-all text-sm font-bold placeholder:text-slate-600"
                     @keyup.enter="handleSubmitUrl"
                   />
                   <button 

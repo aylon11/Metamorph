@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { CheckCircle, Zap, Brain, Sparkles, Database } from 'lucide-vue-next'
+import { Zap, Brain, Sparkles, Database } from 'lucide-vue-next'
 
 const router = useRouter()
 const progress = ref(0)
@@ -32,12 +32,12 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-stone-50 text-slate-900 flex flex-col items-center justify-center relative overflow-hidden selection:bg-gold-500/20">
+  <div class="min-h-screen bg-stone-50 text-slate-900 flex flex-col items-center justify-center relative overflow-hidden selection:bg-emerald-500/20">
     
     <!-- Background Ambient Effects -->
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
         <div class="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-blue-500/5 rounded-full blur-[120px] animate-pulse"></div>
-        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-gold-500/5 rounded-full blur-[120px] animate-pulse delay-1000"></div>
+        <div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-500/5 rounded-full blur-[120px] animate-pulse delay-1000"></div>
     </div>
 
     <div class="z-10 w-full max-w-lg flex flex-col items-center p-8">
@@ -46,13 +46,13 @@ onMounted(() => {
       <div class="relative w-64 h-64 mb-16 flex items-center justify-center">
          <!-- Data Pulse Rings -->
          <div class="absolute inset-0 border border-slate-900/5 rounded-full animate-[spin_25s_linear_infinite]"></div>
-         <div class="absolute inset-8 border border-gold-500/10 rounded-full animate-[spin_10s_linear_infinite_reverse]"></div>
+         <div class="absolute inset-8 border border-emerald-500/10 rounded-full animate-[spin_10s_linear_infinite_reverse]"></div>
          
          <!-- Core Scanner -->
          <div class="w-32 h-32 bg-white rounded-[40px] shadow-2xl premium-shadow border border-stone-100 flex items-center justify-center relative z-10 overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-tr from-blue-500/5 to-transparent"></div>
+            <div class="absolute inset-0 bg-linear-to-tr from-blue-500/5 to-transparent"></div>
             <!-- Scanning Line -->
-            <div class="absolute top-0 left-0 w-full h-1 bg-gold-500/30 blur-sm animate-[bounce_3s_infinite] opacity-50"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-emerald-500/30 blur-sm animate-[bounce_3s_infinite] opacity-50"></div>
             
             <component 
                 :is="currentStep.icon" 
@@ -63,7 +63,7 @@ onMounted(() => {
 
          <!-- Orbiting Nodes -->
          <div class="absolute inset-0 animate-[spin_6s_linear_infinite]">
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 bg-white border border-stone-200 rounded-lg shadow-xl shadow-gold-500/20 rotate-45"></div>
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-3 h-3 bg-emerald-500 border border-emerald-500 rounded-lg shadow-xl shadow-emerald-500/40 rotate-45"></div>
          </div>
       </div>
 
@@ -92,14 +92,14 @@ onMounted(() => {
             </div>
 
             <div 
-                v-for="(step, index) in steps" 
+                v-for="(index) in steps"
                 :key="index"
                 class="relative z-10"
             >
                 <div 
                     class="w-3.5 h-3.5 rounded-full border-2 transition-all duration-500"
                     :class="[
-                        index === currentStepIndex ? 'bg-white border-gold-500 scale-125 shadow-lg' : 
+                        index === currentStepIndex ? 'bg-white border-emerald-500 scale-125 shadow-lg' : 
                         index < currentStepIndex ? 'bg-slate-900 border-slate-900' : 'bg-white border-stone-200'
                     ]"
                 ></div>

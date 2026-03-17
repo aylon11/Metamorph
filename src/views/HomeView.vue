@@ -1,18 +1,18 @@
 <script setup>
 import { useRouter } from 'vue-router'
-import { ArrowRight, Zap, RefreshCw, Layers, TrendingUp, CheckCircle, Smartphone } from 'lucide-vue-next'
+import { ArrowRight, Zap, RefreshCw, TrendingUp, CheckCircle, Smartphone } from 'lucide-vue-next'
 import Logo from '../components/Logo.vue'
 
 const router = useRouter()
 </script>
 
 <template>
-  <div class="min-h-screen bg-stone-50 text-slate-900 font-sans overflow-x-hidden selection:bg-gold-500/20">
+  <div class="min-h-screen bg-stone-50 text-slate-900 font-sans overflow-x-hidden selection:bg-emerald-500/20">
     <!-- Navbar -->
     <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-stone-200">
       <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
-           <Logo size="w-7 h-7" />
+           <Logo size="w-8 h-8" />
            <span class="text-xl font-extrabold tracking-tight text-slate-900">Metamorph</span>
         </div>
         <div class="flex items-center gap-6">
@@ -34,12 +34,12 @@ const router = useRouter()
       <!-- Background Decorative Elements -->
       <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-7xl h-[600px] pointer-events-none opacity-40">
         <div class="absolute top-[-100px] left-[-100px] w-[500px] h-[500px] bg-blue-100 blur-[120px] rounded-full"></div>
-        <div class="absolute top-[200px] right-[-100px] w-[400px] h-[400px] bg-gold-100 blur-[100px] rounded-full"></div>
+        <div class="absolute top-[200px] right-[-100px] w-[400px] h-[400px] bg-emerald-100 blur-[100px] rounded-full"></div>
       </div>
 
       <div class="max-w-7xl mx-auto px-6 relative z-10 text-center">
         <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-stone-200 text-slate-600 text-sm font-medium mb-8 animate-fade-in-up shadow-sm">
-          <span class="flex h-2 w-2 rounded-full bg-gold-500 animate-pulse shrink-0 shadow-[0_0_8px_rgba(202,138,4,0.4)]"></span>
+          <span class="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse shrink-0 shadow-[0_0_8px_rgba(16,185,129,0.4)]"></span>
           Powered by Gemini
         </div>
 
@@ -48,7 +48,7 @@ const router = useRouter()
         </h1>
 
         <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight mb-8 animate-fade-in-up leading-tight text-slate-900">
-          Expand to Google Ads <span class="text-gold-500">in One Click</span>
+          Expand to Google Ads <span class="text-emerald-500">in One Click</span>
         </h2>
 
         <p class="text-xl text-slate-600 max-w-2xl mx-auto mb-12 animate-fade-in-up leading-relaxed">
@@ -72,7 +72,7 @@ const router = useRouter()
 
         <!-- Dashboard mockup preview -->
         <div class="relative mx-auto max-w-5xl animate-fade-in-up hidden md:block group">
-          <div class="absolute -inset-4 bg-gradient-to-tr from-gold-500/10 to-blue-500/10 rounded-[32px] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
+          <div class="absolute -inset-4 bg-gradient-to-tr from-emerald-500/10 to-blue-500/10 rounded-[32px] blur-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"></div>
           <div class="rounded-2xl border border-stone-200 bg-white p-3 shadow-2xl relative overflow-hidden glass-card">
              <!-- Mock UI Header -->
              <div class="flex items-center justify-between mb-4 px-4 pt-2 border-b border-stone-100 pb-3">
@@ -89,11 +89,11 @@ const router = useRouter()
                   <div class="h-3 w-1/2 bg-stone-200 rounded mb-6"></div>
                   <div class="space-y-4">
                     <div class="flex gap-3"><div class="w-10 h-10 rounded-xl bg-blue-500/10 shrink-0"></div><div class="flex-1 space-y-2 py-1"><div class="h-2 bg-stone-200 rounded w-full"></div><div class="h-2 bg-stone-200 rounded w-2/3"></div></div></div>
-                    <div class="flex gap-3"><div class="w-10 h-10 rounded-xl bg-gold-500/10 shrink-0"></div><div class="flex-1 space-y-2 py-1"><div class="h-2 bg-stone-200 rounded w-full"></div><div class="h-2 bg-stone-200 rounded w-1/2"></div></div></div>
+                    <div class="flex gap-3"><div class="w-10 h-10 rounded-xl bg-emerald-500/10 shrink-0"></div><div class="flex-1 space-y-2 py-1"><div class="h-2 bg-stone-200 rounded w-full"></div><div class="h-2 bg-stone-200 rounded w-1/2"></div></div></div>
                   </div>
                 </div>
                 <div class="col-span-2 border border-stone-100 rounded-2xl p-6 bg-stone-50/50 flex flex-col justify-center items-center relative overflow-hidden">
-                   <div class="absolute right-[-20px] top-[-20px] w-40 h-40 bg-gold-200/20 blur-3xl"></div>
+                   <div class="absolute right-[-20px] top-[-20px] w-40 h-40 bg-emerald-200/20 blur-3xl"></div>
                    <div class="w-full max-w-sm bg-white rounded-xl p-5 shadow-xl mb-6 relative z-10 border border-stone-100 group-hover:translate-y-[-4px] transition-transform duration-500">
                       <div class="flex items-center gap-2 mb-3">
                         <div class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-stone-100 text-stone-500 uppercase tracking-wider">Preview</div>
@@ -102,7 +102,7 @@ const router = useRouter()
                       <div class="text-slate-600 text-sm line-clamp-2 leading-relaxed">Shop our exclusive collection of rare Philodendrons. Healthy plants delivered to your door.</div>
                    </div>
                    <div class="px-8 py-3 bg-slate-900 text-white rounded-xl text-sm font-bold shadow-xl z-10 flex items-center gap-2 hover:bg-slate-800 transition-colors cursor-pointer">
-                      <Zap class="w-4 h-4 text-gold-500" /> Deploy to Google Ads
+                      <Zap class="w-4 h-4 text-emerald-500" /> Deploy to Google Ads
                    </div>
                 </div>
              </div>
@@ -121,7 +121,7 @@ const router = useRouter()
 
         <div class="grid md:grid-cols-3 gap-10">
           <!-- Feature 1 -->
-          <div class="bg-stone-50/50 border border-stone-100 p-10 rounded-3xl hover:border-gold-500/30 transition-all group hover:bg-white hover:shadow-2xl hover:shadow-stone-200/50">
+          <div class="bg-stone-50/50 border border-stone-100 p-10 rounded-3xl hover:border-emerald-500/30 transition-all group hover:bg-white hover:shadow-2xl hover:shadow-stone-200/50">
             <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm border border-stone-100 group-hover:scale-110 group-hover:rotate-3 transition-transform">
               <RefreshCw class="w-8 h-8 text-blue-500" />
             </div>
@@ -132,9 +132,9 @@ const router = useRouter()
           </div>
 
           <!-- Feature 2 -->
-          <div class="bg-stone-50/50 border border-stone-100 p-10 rounded-3xl hover:border-gold-500/30 transition-all group hover:bg-white hover:shadow-2xl hover:shadow-stone-200/50">
+          <div class="bg-stone-50/50 border border-stone-100 p-10 rounded-3xl hover:border-emerald-500/30 transition-all group hover:bg-white hover:shadow-2xl hover:shadow-stone-200/50">
             <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm border border-stone-100 group-hover:scale-110 group-hover:-rotate-3 transition-transform">
-              <Smartphone class="w-8 h-8 text-gold-500" />
+              <Smartphone class="w-8 h-8 text-emerald-500" />
             </div>
             <h3 class="text-2xl font-bold mb-4 text-slate-900">Instant Landing Pages</h3>
             <p class="text-slate-500 leading-relaxed text-lg">
@@ -143,7 +143,7 @@ const router = useRouter()
           </div>
 
           <!-- Feature 3 -->
-          <div class="bg-stone-50/50 border border-stone-100 p-10 rounded-3xl hover:border-gold-500/30 transition-all group hover:bg-white hover:shadow-2xl hover:shadow-stone-200/50">
+          <div class="bg-stone-50/50 border border-stone-100 p-10 rounded-3xl hover:border-emerald-500/30 transition-all group hover:bg-white hover:shadow-2xl hover:shadow-stone-200/50">
             <div class="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mb-8 shadow-sm border border-stone-100 group-hover:scale-110 group-hover:rotate-3 transition-transform">
               <TrendingUp class="w-8 h-8 text-slate-900" />
             </div>
@@ -165,9 +165,9 @@ const router = useRouter()
              <span class="text-xl font-black tracking-tight text-slate-900">Metamorph</span>
           </div>
           <div class="flex gap-10 text-sm font-bold text-slate-400 uppercase tracking-widest">
-            <a href="#" class="hover:text-gold-500 transition-colors">Privacy</a>
-            <a href="#" class="hover:text-gold-500 transition-colors">Terms</a>
-            <a href="#" class="hover:text-gold-500 transition-colors">Contact</a>
+            <a href="#" class="hover:text-emerald-500 transition-colors">Privacy</a>
+            <a href="#" class="hover:text-emerald-500 transition-colors">Terms</a>
+            <a href="#" class="hover:text-emerald-500 transition-colors">Contact</a>
           </div>
           <div class="text-slate-400 text-sm font-medium">
             &copy; {{ new Date().getFullYear() }} Metamorph. All rights reserved.

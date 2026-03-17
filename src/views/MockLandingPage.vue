@@ -19,7 +19,7 @@ onMounted(() => {
       <div v-if="isLoading" class="fixed inset-0 z-[100] bg-stone-50 text-slate-900 font-sans flex flex-col items-center justify-center p-4 text-center overflow-hidden">
         <!-- Background Ambient Effects -->
         <div class="absolute inset-0 overflow-hidden pointer-events-none">
-            <div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-gold-500/10 rounded-full blur-[120px] animate-pulse"></div>
+            <div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-500/10 rounded-full blur-[120px] animate-pulse"></div>
             <div class="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-slate-900/5 rounded-full blur-[120px] animate-pulse delay-1000"></div>
         </div>
         
@@ -27,19 +27,19 @@ onMounted(() => {
             <!-- Central Animation Hub -->
             <div class="relative w-64 h-64 mb-12 flex items-center justify-center">
               <!-- Geometric Rings -->
-              <div class="absolute inset-0 border border-gold-500/20 rounded-full animate-[spin_20s_linear_infinite]"></div>
+              <div class="absolute inset-0 border border-emerald-500/20 rounded-full animate-[spin_20s_linear_infinite]"></div>
               <div class="absolute inset-8 border border-slate-950/5 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
-              <div class="absolute inset-16 border-2 border-dashed border-gold-500/10 rounded-full animate-[spin_30s_linear_infinite]"></div>
+              <div class="absolute inset-16 border-2 border-dashed border-emerald-500/10 rounded-full animate-[spin_30s_linear_infinite]"></div>
               
               <!-- Core -->
               <div class="w-32 h-32 bg-white rounded-[40px] shadow-2xl premium-shadow border border-stone-100 flex items-center justify-center relative z-10 group overflow-hidden">
-                  <div class="absolute inset-0 bg-gradient-to-br from-gold-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                  <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                   <Sparkles class="w-12 h-12 text-slate-950 animate-pulse" />
               </div>
 
               <!-- Orbiting Particles -->
               <div class="absolute inset-0 animate-[spin_8s_linear_infinite]">
-                  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-gold-500 rounded-full shadow-[0_0_15px_rgba(202,138,4,0.5)]"></div>
+                  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-emerald-500 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.5)]"></div>
               </div>
             </div>
 
@@ -62,7 +62,7 @@ onMounted(() => {
                 <div class="bg-white border border-stone-200 rounded-2xl p-6 shadow-xl premium-shadow flex items-center justify-between">
                     <div class="flex items-center gap-4 text-left">
                         <div class="w-10 h-10 bg-stone-50 rounded-xl flex items-center justify-center border border-stone-100">
-                            <Layout class="w-5 h-5 text-gold-600" />
+                            <Layout class="w-5 h-5 text-emerald-600" />
                         </div>
                         <div>
                             <div class="text-[9px] font-black text-slate-400 uppercase tracking-widest">Status</div>

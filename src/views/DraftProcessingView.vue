@@ -34,11 +34,11 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-stone-50 text-slate-900 flex flex-col items-center justify-center relative overflow-hidden selection:bg-gold-500/20">
+  <div class="min-h-screen bg-stone-50 text-slate-900 flex flex-col items-center justify-center relative overflow-hidden selection:bg-emerald-500/20">
     
     <!-- Background Ambient Effects -->
     <div class="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
-        <div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-gold-500/5 rounded-full blur-[120px] animate-pulse"></div>
+        <div class="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-500/5 rounded-full blur-[120px] animate-pulse"></div>
         <div class="absolute bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-slate-900/5 rounded-full blur-[120px] animate-pulse delay-1000"></div>
     </div>
 
@@ -47,13 +47,13 @@ onMounted(() => {
       <!-- Central Animation Hub -->
       <div class="relative w-64 h-64 mb-16 flex items-center justify-center">
          <!-- Geometric Rings -->
-         <div class="absolute inset-0 border border-gold-500/20 rounded-full animate-[spin_20s_linear_infinite]"></div>
+         <div class="absolute inset-0 border border-emerald-500/20 rounded-full animate-[spin_20s_linear_infinite]"></div>
          <div class="absolute inset-8 border border-slate-950/5 rounded-full animate-[spin_15s_linear_infinite_reverse]"></div>
-         <div class="absolute inset-16 border-2 border-dashed border-gold-500/10 rounded-full animate-[spin_30s_linear_infinite]"></div>
+         <div class="absolute inset-16 border-2 border-dashed border-emerald-500/10 rounded-full animate-[spin_30s_linear_infinite]"></div>
          
          <!-- Core -->
          <div class="w-32 h-32 bg-white rounded-[40px] shadow-2xl premium-shadow border border-stone-100 flex items-center justify-center relative z-10 group overflow-hidden">
-            <div class="absolute inset-0 bg-gradient-to-br from-gold-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div class="absolute inset-0 bg-linear-to-br from-emerald-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
             <component 
                 :is="currentStep.icon" 
                 class="w-12 h-12 text-slate-950 transition-all duration-700"
@@ -63,7 +63,7 @@ onMounted(() => {
 
          <!-- Orbiting Particles -->
          <div class="absolute inset-0 animate-[spin_8s_linear_infinite]">
-            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-gold-500 rounded-full shadow-[0_0_15px_rgba(202,138,4,0.5)]"></div>
+            <div class="absolute top-0 left-1/2 -translate-x-1/2 w-2 h-2 bg-emerald-500 rounded-full shadow-[0_0_15px_rgba(16,185,129,0.5)]"></div>
          </div>
          <div class="absolute inset-0 animate-[spin_12s_linear_infinite_reverse]">
             <div class="absolute bottom-4 left-1/4 w-1.5 h-1.5 bg-slate-900 rounded-full"></div>
@@ -95,14 +95,14 @@ onMounted(() => {
             </div>
 
             <div 
-                v-for="(step, index) in steps" 
+                v-for="(index) in steps"
                 :key="index"
                 class="relative z-10"
             >
                 <div 
                     class="w-3.5 h-3.5 rounded-full border-2 transition-all duration-500"
                     :class="[
-                        index === currentStepIndex ? 'bg-white border-gold-500 scale-125 shadow-lg' : 
+                        index === currentStepIndex ? 'bg-white border-emerald-500 scale-125 shadow-lg' : 
                         index < currentStepIndex ? 'bg-slate-950 border-slate-950' : 'bg-white border-stone-200'
                     ]"
                 ></div>

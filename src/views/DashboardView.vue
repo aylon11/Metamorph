@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { metaCampaigns, recommendedGoogleCampaigns, impactForecast, extractedAssets, businessProfile } from '../data/mockData'
+import { metaCampaigns, extractedAssets, businessProfile } from '../data/mockData'
 import { 
   ArrowRight, 
   TrendingUp, 
@@ -213,17 +213,17 @@ const handleLaunch = () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-stone-50 text-slate-900 font-sans flex flex-col selection:bg-gold-500/20">
+  <div class="min-h-screen bg-stone-50 text-slate-900 font-sans flex flex-col selection:bg-emerald-500/20">
     <!-- Navbar -->
     <nav class="bg-white border-b border-stone-200 z-50">
       <div class="w-full px-8 h-16 flex items-center justify-between">
         <div class="flex items-center gap-3">
-           <Logo size="w-7 h-7" />
+           <Logo size="w-8 h-8" />
            <span class="text-xl font-extrabold tracking-tight">Metamorph</span>
         </div>
         <div class="flex items-center gap-4">
           <div class="px-3 py-1.5 bg-stone-100/50 border border-stone-200 rounded-full text-[10px] font-bold text-slate-500 uppercase tracking-widest flex items-center gap-2">
-            <span class="w-1.5 h-1.5 rounded-full bg-gold-500 animate-pulse"></span>
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
             AI Engine Active
           </div>
           <div class="w-8 h-8 rounded-full bg-stone-200 border border-stone-300 flex items-center justify-center text-xs font-bold text-stone-600">
@@ -258,10 +258,10 @@ const handleLaunch = () => {
                     v-for="(campaign, index) in metaCampaigns" 
                     :key="campaign.id"
                     class="bg-white rounded-[24px] overflow-hidden shadow-xl border-2 transition-all duration-300 cursor-pointer relative group premium-shadow"
-                    :class="selectedCampaignIds.includes(campaign.id) ? 'border-gold-500 bg-stone-50/50 scale-[1.02]' : 'border-transparent hover:border-stone-200'"
+                    :class="selectedCampaignIds.includes(campaign.id) ? 'border-emerald-500 bg-stone-50/50 scale-[1.02]' : 'border-transparent hover:border-stone-200'"
                     @click="toggleCampaign(campaign.id)"
                 >
-                    <div v-if="selectedCampaignIds.includes(campaign.id)" class="absolute top-4 right-4 z-20 bg-gold-500 text-white rounded-full p-0.5 shadow-lg animate-fade-in-up">
+                    <div v-if="selectedCampaignIds.includes(campaign.id)" class="absolute top-4 right-4 z-20 bg-emerald-500 text-white rounded-full p-0.5 shadow-lg animate-fade-in-up">
                         <CheckCircle class="w-5 h-5" />
                     </div>
 
@@ -284,13 +284,13 @@ const handleLaunch = () => {
                     </div>
                      <div class="p-4 bg-white border-t border-stone-100 flex justify-between items-center group-hover:bg-stone-50 transition-colors">
                         <span class="text-xs font-extrabold text-slate-900 uppercase tracking-widest">Shop Now</span>
-                        <ArrowRight class="w-4 h-4 text-gold-500" />
+                        <ArrowRight class="w-4 h-4 text-emerald-500" />
                     </div>
                     <div class="p-4 pt-0 space-y-3">
                          <div class="flex gap-4">
                             <Heart class="w-5 h-5 text-slate-900 hover:text-red-500 transition-colors cursor-pointer" />
                             <MessageCircle class="w-5 h-5 text-slate-900 hover:text-blue-500 transition-colors cursor-pointer" />
-                            <Send class="w-5 h-5 text-slate-900 hover:text-gold-500 transition-colors cursor-pointer" />
+                            <Send class="w-5 h-5 text-slate-900 hover:text-emerald-500 transition-colors cursor-pointer" />
                          </div>
                         <div class="text-xs text-slate-600 line-clamp-2 leading-relaxed">
                             <span class="font-bold text-slate-950">urbanroots</span> {{ extractedAssets.headlines[index % extractedAssets.headlines.length] }} 🌿 #plants #sustainable
@@ -311,7 +311,7 @@ const handleLaunch = () => {
                   </div>
                   <div class="flex items-center gap-2 px-4 py-2 bg-white rounded-2xl shadow-sm border border-stone-200">
                     <span class="text-xs font-bold text-slate-400">STATUS:</span>
-                    <span class="text-xs font-black text-gold-600 uppercase tracking-widest">Optimizing</span>
+                    <span class="text-xs font-black text-emerald-600 uppercase tracking-widest">Optimizing</span>
                   </div>
                 </div>
 
@@ -378,7 +378,7 @@ const handleLaunch = () => {
                     </div>
                     <div class="bg-white rounded-[24px] p-8 border border-stone-200 shadow-xl premium-shadow">
                         <div class="flex flex-wrap gap-3 mb-8">
-                             <div v-for="kw in activeKeywords" :key="kw" class="flex items-center gap-2 px-4 py-2.5 bg-stone-50 border border-stone-100 rounded-xl text-sm font-bold text-slate-700 shadow-sm transition-all group hover:bg-white hover:border-gold-500/30 hover:scale-105">
+                             <div v-for="kw in activeKeywords" :key="kw" class="flex items-center gap-2 px-4 py-2.5 bg-stone-50 border border-stone-100 rounded-xl text-sm font-bold text-slate-700 shadow-sm transition-all group hover:bg-white hover:border-emerald-500/30 hover:scale-105">
                                 <span class="text-slate-400 font-medium">"</span>
                                 <span>{{ kw }}</span>
                                 <span class="text-slate-400 font-medium">"</span>
@@ -397,7 +397,7 @@ const handleLaunch = () => {
                                   @keyup.enter="addKeyword"
                                   type="text" 
                                   placeholder="Type to add custom keyword..." 
-                                  class="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-sm font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-gold-500/10 focus:border-gold-500/30 transition-all placeholder:text-slate-400"
+                                  class="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-sm font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500/30 transition-all placeholder:text-slate-400"
                               />
                             </div>
                             <button 
@@ -438,7 +438,7 @@ const handleLaunch = () => {
                              <div 
                                 v-for="(img, index) in visibleImages" 
                                 :key="img" 
-                                class="relative aspect-square rounded-[20px] overflow-hidden group border border-stone-100 hover:border-gold-500/30 transition-all premium-shadow bg-stone-50"
+                                class="relative aspect-square rounded-[20px] overflow-hidden group border border-stone-100 hover:border-emerald-500/30 transition-all premium-shadow bg-stone-50"
                              >
                                 <img :src="img" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
                                 <div class="absolute inset-0 bg-slate-950/0 group-hover:bg-slate-950/20 transition-colors pointer-events-none"></div>
@@ -460,13 +460,13 @@ const handleLaunch = () => {
                             <div class="flex items-center gap-2">
                                 <span class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Enable AI Max</span>
                                 <div class="group/tooltip relative">
-                                    <Info class="w-4 h-4 text-slate-400 cursor-help hover:text-gold-500 transition-colors" />
+                                    <Info class="w-4 h-4 text-slate-400 cursor-help hover:text-emerald-500 transition-colors" />
                                     <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-64 p-4 bg-slate-950 text-white text-[11px] font-medium leading-relaxed rounded-2xl shadow-2xl opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-[100] border border-white/10">
 AI Max for Search campaigns is a Google Ads feature set that uses artificial intelligence to enhance existing search campaigns, aiming to improve performance by increasing conversions                                        <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-px border-8 border-transparent border-t-slate-950"></div>
                                     </div>
                                 </div>
                             </div>
-                            <span class="text-[9px] font-bold text-gold-600/60 uppercase tracking-widest mt-1">Real-time Performance Optimization</span>
+                            <span class="text-[9px] font-bold text-emerald-600/60 uppercase tracking-widest mt-1">Real-time Performance Optimization</span>
                         </div>
                         
                         <button 
@@ -495,7 +495,7 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                     <div class="flex flex-col items-center">
                         <!-- Account Node -->
                         <div class="z-10 bg-slate-950 text-white px-8 py-4 rounded-[20px] text-sm font-black flex items-center gap-3 shadow-2xl shadow-slate-950/20 group hover:scale-105 transition-transform uppercase tracking-widest">
-                            <Layers class="w-5 h-5 text-gold-500" />
+                            <Layers class="w-5 h-5 text-emerald-500" />
                             {{ businessProfile.name }}
                             <span class="text-slate-500 ml-2 font-medium">(Account)</span>
                         </div>
@@ -508,8 +508,8 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                                 <div class="absolute top-0 w-px h-10 bg-stone-200"></div>
 
                                 <!-- Campaign Node -->
-                                <div class="bg-white border border-stone-200 text-slate-900 p-5 rounded-[20px] text-center w-full mb-6 relative group hover:border-gold-500/30 transition-all hover:translate-y-[-4px] shadow-xl premium-shadow">
-                                    <div class="text-[9px] font-black uppercase text-gold-600 mb-2 tracking-[0.2em] opacity-80">Campaign</div>
+                                <div class="bg-white border border-stone-200 text-slate-900 p-5 rounded-[20px] text-center w-full mb-6 relative group hover:border-emerald-500/30 transition-all hover:translate-y-[-4px] shadow-xl premium-shadow">
+                                    <div class="text-[9px] font-black uppercase text-emerald-600 mb-2 tracking-[0.2em] opacity-80">Campaign</div>
                                     <div class="text-sm font-black tracking-tight truncate px-1" :title="camp.name">{{ camp.name }}</div>
                                 </div>
                                 
@@ -553,7 +553,7 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                                 <div class="space-y-1">
                                     <div class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Incremental Growth</div>
                                     <div class="text-4xl font-black text-slate-950 tracking-tighter">{{ formatCurrency(calculatedForecast.incremental) }}</div>
-                                    <div class="text-xs font-bold text-gold-600 bg-gold-50 px-2 py-0.5 rounded-lg inline-block mt-2">Direct Expansion Value</div>
+                                    <div class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-lg inline-block mt-2">Direct Expansion Value</div>
                                 </div>
                              </div>
 
@@ -619,7 +619,7 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
 
                              <!-- Budget Input -->
                              <div class="bg-slate-950 p-6 rounded-[24px] shadow-2xl shadow-slate-900/10 flex items-center justify-between group overflow-hidden relative">
-                                 <div class="absolute inset-0 bg-gradient-to-r from-gold-500/5 to-transparent pointer-events-none"></div>
+                                 <div class="absolute inset-0 bg-gradient-to-r from-emerald-500/5 to-transparent pointer-events-none"></div>
                                  <div class="flex items-center gap-5 relative z-10">
                                      <div class="w-14 h-14 bg-green-500/20 rounded-2xl flex items-center justify-center text-green-500 backdrop-blur-sm border border-green-500/20 shadow-inner">
                                          <DollarSign class="w-8 h-8" />
@@ -693,7 +693,7 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                                 @click="showLaunchModal = true"
                                 class="w-full relative bg-slate-950 hover:bg-slate-900 text-white font-black py-6 rounded-[24px] shadow-2xl transition-all transform hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-4 group overflow-hidden"
                              >
-                                <div class="absolute inset-0 bg-gradient-to-tr from-gold-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                                <div class="absolute inset-0 bg-gradient-to-tr from-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                 <div class="bg-white p-2.5 rounded-2xl w-12 h-12 flex items-center justify-center shadow-lg relative z-10">
                                      <img 
                                         src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Ads_logo.svg" 
@@ -702,7 +702,7 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                                      />
                                 </div>
                                 <span class="text-xl uppercase tracking-widest relative z-10">Deploy Now</span>
-                                <ArrowRight class="w-6 h-6 text-gold-500 group-hover:translate-x-2 transition-transform relative z-10" />
+                                <ArrowRight class="w-6 h-6 text-emerald-500 group-hover:translate-x-2 transition-transform relative z-10" />
                              </button>
                         </div>
 
@@ -768,7 +768,7 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                     </div>
                      <div class="p-4 bg-stone-50 rounded-2xl border border-stone-100 flex items-center justify-between">
                         <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Target Account</span>
-                        <span class="text-sm font-black text-gold-600 truncate max-w-[160px]">{{ businessProfile.name }}</span>
+                        <span class="text-sm font-black text-emerald-600 truncate max-w-[160px]">{{ businessProfile.name }}</span>
                     </div>
                 </div>
 
@@ -791,7 +791,7 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                         
                         <div 
                             v-if="isLaunching" 
-                            class="absolute bottom-0 left-0 h-1 bg-gold-500 w-full"
+                            class="absolute bottom-0 left-0 h-1 bg-emerald-500 w-full"
                             style="animation: slideRight 2.5s linear forwards"
                         ></div>
                     </button>

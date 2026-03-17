@@ -16,8 +16,8 @@ const handleConnect = () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-stone-50 flex items-center justify-center p-6 selection:bg-gold-500/20">
-    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-gold-500 via-slate-900 to-gold-500"></div>
+  <div class="min-h-screen bg-stone-50 flex items-center justify-center p-6 selection:bg-emerald-500/20">
+    <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-emerald-500 via-slate-900 to-emerald-500"></div>
     
     <div class="max-w-md w-full space-y-8 animate-fade-in-up">
       <div class="text-center space-y-4">
@@ -71,7 +71,7 @@ const handleConnect = () => {
       <div class="text-center">
         <p class="text-[10px] text-slate-400 font-bold uppercase tracking-[0.2em] leading-relaxed">
           By connecting, you agree to our<br/>
-          <a href="#" class="text-slate-600 hover:text-gold-500 underline decoration-slate-200">Terms of Service</a> & <a href="#" class="text-slate-600 hover:text-gold-500 underline decoration-slate-200">Privacy Policy</a>
+          <a href="#" class="text-slate-600 hover:text-emerald-500 underline decoration-slate-200">Terms of Service</a> & <a href="#" class="text-slate-600 hover:text-emerald-500 underline decoration-slate-200">Privacy Policy</a>
         </p>
       </div>
     </div>
