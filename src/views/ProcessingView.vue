@@ -92,7 +92,7 @@ onMounted(() => {
             </div>
 
             <div 
-                v-for="(index) in steps"
+                v-for="(step, index) in steps"
                 :key="index"
                 class="relative z-10"
             >
