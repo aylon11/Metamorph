@@ -46,6 +46,21 @@ const router = createRouter({
       path: '/dashboard',
       name: 'dashboard',
       component: DashboardView
+    },
+    {
+      path: '/sign-in',
+      name: 'sign-in',
+      component: () => import('../views/SignInView.vue')
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('../views/ProfileView.vue')
+    },
+    {
+      path: '/performance-dashboard',
+      name: 'performance-dashboard',
+      component: () => import('../views/PerformanceDashboardView.vue')
     }
   ]
 })

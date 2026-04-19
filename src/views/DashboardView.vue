@@ -31,6 +31,7 @@ const isLaunching = ref(false)
 const launchSuccess = ref(false)
 const isGoogleAuthenticated = ref(false)
 const isSigningIn = ref(false)
+const showGoogleDialog = ref(false)
 const showLaunchModal = ref(false)
 const isAiMaxEnabled = ref(false)
 
@@ -226,8 +227,8 @@ const handleLaunch = () => {
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
             AI Engine Active
           </div>
-          <div class="w-8 h-8 rounded-full bg-stone-200 border border-stone-300 flex items-center justify-center text-xs font-bold text-stone-600">
-            UR
+          <div class="w-8 h-8 rounded-full border border-stone-300 flex items-center justify-center overflow-hidden shadow-sm">
+            <img src="../assets/user_avatar.png" alt="User Profile" class="w-full h-full object-cover" />
           </div>
         </div>
       </div>
@@ -664,7 +665,7 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                         <div v-if="!isGoogleAuthenticated" class="flex flex-col items-center gap-6 animate-fade-in-up">
                             <h2 class="text-2xl font-black text-slate-950 tracking-tight">Ready for Deployment</h2>
                             <button 
-                                @click="handleSignIn"
+                                @click="showGoogleDialog = true"
                                 :disabled="isSigningIn"
                                 class="bg-white hover:bg-stone-50 text-slate-900 font-bold py-4 px-10 rounded-2xl shadow-2xl premium-shadow transition-all flex items-center gap-4 border border-stone-200 relative overflow-hidden group active:scale-95"
                             >
@@ -799,7 +800,91 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
             </div>
         </div>
     </div>
+    
+
+  <!-- Mock Google Sign-In Popup (Mock Browser Window) -->
+  <div v-if="showGoogleDialog" class="fixed inset-0 z-[100] flex items-center justify-center p-6 bg-slate-950/40 backdrop-blur-md" @click="showGoogleDialog = false">
+    <div class="bg-white w-full max-w-lg rounded-[28px] border border-white shadow-2xl relative z-10 overflow-hidden animate-fade-in-up premium-shadow flex flex-col" @click.stop>
+      
+      <!-- Mock Browser Header (Mac style) -->
+      <div class="h-12 bg-stone-100 border-b border-stone-200 flex items-center px-6 justify-between shrink-0">
+        <div class="flex items-center gap-2">
+          <div class="w-3.5 h-3.5 rounded-full bg-red-400"></div>
+          <div class="w-3.5 h-3.5 rounded-full bg-yellow-400"></div>
+          <div class="w-3.5 h-3.5 rounded-full bg-green-400"></div>
+        </div>
+        <div class="flex-1 flex justify-center mx-4">
+          <div class="w-full max-w-xs h-7 bg-white border border-stone-200 rounded-lg flex items-center px-3 text-[11px] font-medium text-slate-400 gap-2 truncate">
+            <svg class="w-3.5 h-3.5 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            accounts.google.com/o/oauth2/auth...
+          </div>
+        </div>
+        <button @click="showGoogleDialog = false" class="text-slate-400 hover:text-slate-900 transition-colors p-2 hover:bg-stone-200 rounded-xl">
+          <X class="w-5 h-5" />
+        </button>
+      </div>
+
+      <!-- Main Content (Standard Google Sign-In UI in Light Mode) -->
+      <div class="p-10 flex flex-col items-center justify-between flex-1 min-h-[450px]">
+        
+        <div class="w-full flex flex-col items-center">
+          <!-- Google Logo -->
+          <div class="mb-5 mt-2">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" class="w-12 h-12">
+              <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
+              <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
+              <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.28-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
+              <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
+            </svg>
+          </div>
+
+          <h3 class="text-2xl font-bold text-slate-900 mb-1 tracking-tight">Sign in</h3>
+          <p class="text-sm font-medium text-slate-600 mb-8">to continue to <span class="font-bold text-slate-900">Metamorph</span></p>
+
+          <!-- Account Selection Account -->
+          <div class="w-full max-w-sm space-y-4">
+            <button 
+              @click="showGoogleDialog = false; handleSignIn()" 
+              class="w-full p-5 bg-stone-50 hover:bg-stone-100 border border-stone-200 rounded-2xl flex items-center justify-between transition-all group active:scale-95"
+            >
+              <div class="flex items-center gap-4">
+                <div class="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center overflow-hidden shadow-sm shrink-0">
+                  <img src="../assets/user_avatar.png" alt="User Profile" class="w-full h-full object-cover" />
+                </div>
+                <div class="text-left">
+                  <div class="text-base font-bold text-slate-900 group-hover:text-slate-950">Libby McLiblib</div>
+                  <div class="text-xs font-medium text-slate-500">libby.mcliblib@gmail.com</div>
+                </div>
+              </div>
+              <ChevronDown class="w-5 h-5 text-slate-400 group-hover:text-slate-600 transition-colors" />
+            </button>
+
+            <!-- Use Another Account Option -->
+            <button class="w-full p-5 hover:bg-stone-50 border border-dashed border-stone-200 rounded-2xl flex items-center transition-all group">
+              <div class="w-12 h-12 rounded-full border border-stone-200 flex items-center justify-center bg-stone-100/50 shrink-0">
+                <svg class="w-6 h-6 text-slate-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="4"/><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/></svg>
+              </div>
+              <div class="text-left ml-4">
+                <div class="text-sm font-bold text-slate-700 group-hover:text-slate-900">Use another account</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="w-full pt-6 mt-6 border-t border-stone-100 flex items-center justify-between text-[11px] font-medium text-slate-400">
+          <span>English (United States)</span>
+          <div class="flex items-center gap-4">
+            <a href="#" class="hover:text-slate-900 transition-colors">Help</a>
+            <a href="#" class="hover:text-slate-900 transition-colors">Privacy</a>
+            <a href="#" class="hover:text-slate-900 transition-colors">Terms</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
   </div>
+</div>
 </template>
 
 <style scoped>

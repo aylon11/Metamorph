@@ -16,7 +16,7 @@ const router = useRouter()
            <span class="text-xl font-extrabold tracking-tight text-slate-900">Metamorph</span>
         </div>
         <div class="flex items-center gap-6">
-          <button @click="router.push('/connect')" class="text-sm font-semibold text-slate-600 hover:text-slate-950 transition-colors">
+          <button @click="router.push('/sign-in')" class="text-sm font-semibold text-slate-600 hover:text-slate-950 transition-colors">
             Sign In
           </button>
           <button 
