@@ -1,7 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { extractedAssets } from '../data/mockData'
+import { extractedAssets } from '../data/metaIngestion'
 import { CheckCircle, Layout, ArrowRight, SkipForward, Sparkles, Image as ImageIcon, Type, Users, AlertTriangle } from 'lucide-vue-next'
 import Logo from '../components/Logo.vue'
 

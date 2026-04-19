@@ -1,0 +1,115 @@
+{
+  "campaigns": {
+    "data": [
+      {
+        "id": "meta_1",
+        "name": "Spring Sale - Instagram Boost",
+        "status": "ACTIVE",
+        "objective": "OUTCOME_SALES",
+        "buying_type": "AUCTION",
+        "created_time": "2026-04-01T08:00:00Z"
+      },
+      {
+        "id": "meta_2",
+        "name": "Rare Philodendrons Retargeting",
+        "status": "ACTIVE",
+        "objective": "OUTCOME_SALES",
+        "buying_type": "AUCTION",
+        "created_time": "2026-04-05T09:00:00Z"
+      },
+      {
+        "id": "meta_3",
+        "name": "New Arrivals Carousel",
+        "status": "PAUSED",
+        "objective": "OUTCOME_TRAFFIC",
+        "buying_type": "AUCTION",
+        "created_time": "2026-04-10T10:00:00Z"
+      }
+    ]
+  },
+  "insights": {
+    "data": [
+      {
+        "campaign_id": "meta_1",
+        "campaign_name": "Spring Sale - Instagram Boost",
+        "spend": 4500,
+        "impressions": 125000,
+        "clicks": 3200,
+        "actions": [
+          { "action_type": "purchase", "value": 85 }
+        ],
+        "action_values": [
+          { "action_type": "purchase", "value": 9450 }
+        ],
+        "date_start": "2026-04-01",
+        "date_stop": "2026-04-15"
+      },
+      {
+        "campaign_id": "meta_2",
+        "campaign_name": "Rare Philodendrons Retargeting",
+        "spend": 2100,
+        "impressions": 45000,
+        "clicks": 950,
+        "actions": [
+          { "action_type": "purchase", "value": 42 }
+        ],
+        "action_values": [
+          { "action_type": "purchase", "value": 7140 }
+        ],
+        "date_start": "2026-04-05",
+        "date_stop": "2026-04-15"
+      },
+      {
+        "campaign_id": "meta_3",
+        "campaign_name": "New Arrivals Carousel",
+        "spend": 1200,
+        "impressions": 28000,
+        "clicks": 400,
+        "actions": [
+          { "action_type": "purchase", "value": 15 }
+        ],
+        "action_values": [
+          { "action_type": "purchase", "value": 2160 }
+        ],
+        "date_start": "2026-04-10",
+        "date_stop": "2026-04-15"
+      }
+    ]
+  },
+  "adcreatives": {
+    "data": [
+      {
+        "id": "creative_1",
+        "name": "Spring Sale Image",
+        "image_url": "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?q=80&w=2449&auto=format&fit=crop",
+        "title": "Bring Nature Indoors"
+      },
+      {
+        "id": "creative_2",
+        "name": "Rare Philo Image",
+        "image_url": "https://images.unsplash.com/photo-1545241047-6083a3684587?q=80&w=800&auto=format&fit=crop",
+        "title": "Rare Philodendrons Restocked"
+      },
+      {
+        "id": "creative_3",
+        "name": "Carousel Image 1",
+        "image_url": "https://images.unsplash.com/photo-1463320898484-cdee8141c787?q=80&w=800&auto=format&fit=crop",
+        "title": "Urban Jungle - Plant Sale"
+      },
+      {
+        "id": "creative_4",
+        "name": "Carousel Image 2",
+        "image_url": "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=800&auto=format&fit=crop",
+        "title": "Transform Your Space"
+      }
+    ]
+  },
+  "customaudiences": {
+    "data": [
+      { "id": "aud_1", "name": "Home Decor Enthusiasts (Top 5%)" },
+      { "id": "aud_2", "name": "Apartment Living" },
+      { "id": "aud_3", "name": "Botany Interests" },
+      { "id": "aud_4", "name": "Sustainable Lifestyle" }
+    ]
+  }
+}

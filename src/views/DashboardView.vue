@@ -1,7 +1,8 @@
 <script setup>
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { metaCampaigns, extractedAssets, businessProfile } from '../data/mockData'
+import { metaCampaigns, extractedAssets } from '../data/metaIngestion'
+import { businessProfile } from '../data/mockData'
 import { 
   ArrowRight, 
   TrendingUp, 
