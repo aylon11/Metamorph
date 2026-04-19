@@ -16,7 +16,8 @@ export const metaCampaigns = rawData.campaigns.data.map(campaign => {
     clicks: insights.clicks || 0,
     conversions: purchases,
     roas: roas,
-    platform: campaign.name.toLowerCase().includes('instagram') ? 'Instagram' : 'Facebook'
+    platform: campaign.name.toLowerCase().includes('instagram') ? 'Instagram' : 'Facebook',
+    dailyBudget: campaign.daily_budget ? parseFloat(campaign.daily_budget) : 0
   }
 })
 
@@ -25,3 +26,5 @@ export const extractedAssets = {
   headlines: rawData.adcreatives.data.map(c => c.title),
   audience: rawData.customaudiences.data.map(a => a.name)
 }
+
+export const adAccount = rawData.adaccount || {}

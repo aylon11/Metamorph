@@ -1,4 +1,12 @@
 {
+  "adaccount": {
+    "id": "act_123456789",
+    "name": "Urban Jungle Business Account",
+    "currency": "USD",
+    "spend_cap": "0",
+    "amount_spent": "12500",
+    "account_status": 1
+  },
   "campaigns": {
     "data": [
       {
@@ -7,6 +15,7 @@
         "status": "ACTIVE",
         "objective": "OUTCOME_SALES",
         "buying_type": "AUCTION",
+        "daily_budget": "5000",
         "created_time": "2026-04-01T08:00:00Z"
       },
       {
@@ -15,6 +24,7 @@
         "status": "ACTIVE",
         "objective": "OUTCOME_SALES",
         "buying_type": "AUCTION",
+        "daily_budget": "3000",
         "created_time": "2026-04-05T09:00:00Z"
       },
       {
@@ -23,6 +33,7 @@
         "status": "PAUSED",
         "objective": "OUTCOME_TRAFFIC",
         "buying_type": "AUCTION",
+        "daily_budget": "2000",
         "created_time": "2026-04-10T10:00:00Z"
       }
     ]
