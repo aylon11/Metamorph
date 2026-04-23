@@ -30,7 +30,7 @@ const handleSubmitUrl = () => {
     <!-- Navbar -->
     <nav class="bg-white border-b border-stone-200 sticky top-0 z-50">
       <div class="w-full px-8 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 cursor-pointer" @click="router.push('/')">
            <Logo size="w-8 h-8" />
            <span class="text-xl font-extrabold tracking-tight">Metamorph</span>
         </div>

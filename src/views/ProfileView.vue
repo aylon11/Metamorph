@@ -72,7 +72,7 @@ const curvePointsOverallRoi = computed(() => {
     <!-- Navbar -->
     <nav class="bg-white border-b border-stone-200 z-50 sticky top-0">
       <div class="w-full px-8 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 cursor-pointer" @click="router.push('/')">
            <Logo size="w-8 h-8" />
            <span class="text-xl font-extrabold tracking-tight">Metamorph</span>
            <span class="px-2 py-0.5 bg-emerald-50 text-emerald-600 text-[10px] font-black uppercase tracking-widest rounded-full border border-emerald-100">Profile</span>

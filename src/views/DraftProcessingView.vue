@@ -2,6 +2,8 @@
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { Layers, Sparkles, TrendingUp, CheckCircle, PackageSearch } from 'lucide-vue-next'
+import { optimizedAdPreviews, optimizedKeywords, isDataLoaded } from '../data/sharedState'
+import { metaCampaigns, extractedAssets } from '../data/metaIngestion'
 
 const router = useRouter()
 const progress = ref(0)
@@ -16,20 +18,66 @@ const steps = [
 
 const currentStep = computed(() => steps[currentStepIndex.value])
 
-onMounted(() => {
+onMounted(async () => {
+  // Start progress simulation
   const interval = setInterval(() => {
-    progress.value += 0.5
-    
-    if (progress.value < 35) currentStepIndex.value = 0
-    else if (progress.value < 60) currentStepIndex.value = 1
-    else if (progress.value < 85) currentStepIndex.value = 2
-    else currentStepIndex.value = 3
-
-    if (progress.value >= 100) {
-      clearInterval(interval)
-      setTimeout(() => router.push('/dashboard'), 500)
+    if (progress.value < 90) {
+      progress.value += 0.5
+      
+      if (progress.value < 35) currentStepIndex.value = 0
+      else if (progress.value < 60) currentStepIndex.value = 1
+      else if (progress.value < 85) currentStepIndex.value = 2
+      else currentStepIndex.value = 3
     }
-  }, 40) 
+  }, 100)
+  
+  try {
+    const campaignsData = metaCampaigns.map(c => ({
+      id: c.id,
+      name: c.name,
+      assets: {
+        headlines: [...extractedAssets.headlines, c.name]
+      }
+    }))
+    
+    const response = await fetch('http://localhost:3000/api/reoptimize', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ campaigns: campaignsData })
+    })
+    
+    const data = await response.json()
+    
+    const adPreviews = {}
+    const keywords = {}
+    
+    for (const campaignId in data) {
+      const campaignData = data[campaignId]
+      adPreviews[campaignId] = {
+        headlines: campaignData.headlines || [],
+        descriptions: campaignData.descriptions || []
+      }
+      keywords[campaignId] = campaignData.keywords || []
+    }
+    
+    optimizedAdPreviews.value = adPreviews
+    optimizedKeywords.value = keywords
+    isDataLoaded.value = true
+    
+    // Complete progress
+    clearInterval(interval)
+    progress.value = 100
+    currentStepIndex.value = 3
+    
+    setTimeout(() => router.push('/dashboard'), 500)
+    
+  } catch (error) {
+    console.error('Failed to optimize assets:', error);
+    clearInterval(interval)
+    setTimeout(() => router.push('/dashboard'), 500)
+  }
 })
 </script>
 

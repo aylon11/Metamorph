@@ -1,8 +1,10 @@
 <script setup>
+
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { metaCampaigns, extractedAssets } from '../data/metaIngestion'
 import { businessProfile } from '../data/mockData'
+import { optimizedAdPreviews, optimizedKeywords, isDataLoaded } from '../data/sharedState'
 import { 
   ArrowRight, 
   TrendingUp, 
@@ -52,6 +54,8 @@ const toggleCampaign = (id) => {
 
 // Image Extensions Logic
 const removedImages = ref(new Set())
+const manuallyAddedImages = ref([])
+const fileInput = ref(null)
 
 const relevantImages = computed(() => {
   const images = []
@@ -66,9 +70,24 @@ const relevantImages = computed(() => {
   return images
 })
 
-const visibleImages = computed(() => 
-  relevantImages.value.filter(img => !removedImages.value.has(img))
-)
+const visibleImages = computed(() => {
+  const combined = [...relevantImages.value, ...manuallyAddedImages.value]
+  return combined.filter(img => !removedImages.value.has(img))
+})
+
+const triggerFileUpload = () => {
+  fileInput.value.click()
+}
+
+const handleImageUpload = (event) => {
+  const files = event.target.files
+  if (!files) return
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i]
+    const url = URL.createObjectURL(file)
+    manuallyAddedImages.value.push(url)
+  }
+}
 
 const removeImage = (img) => {
   removedImages.value.add(img)
@@ -144,23 +163,126 @@ const accountStructure = computed(() => {
 
 const googleAdPreviews = computed(() => {
   return selectedCampaigns.value.map(campaign => {
+    let suggestions = []
     if (campaign.id === 'meta_2') {
-      return {
-        id: campaign.id,
-        headline: "Rare Philodendrons | Exotic Indoor Plants",
-        description: "Shop our exclusive collection of rare Philodendrons. Hand-picked, healthy plants delivered to your door. 30-day health guarantee.",
-        keywords: ["buy philodendron online", "rare house plants", "exotic indoor plants", "philodendron pink princess"],
-        sitelinks: ["New Arrivals", "Care Guides", "Plant Subscription", "Gift Cards"]
-      }
+      suggestions = [
+        {
+          id: `${campaign.id}_1`,
+          headline: "Rare Philodendrons | Exotic Indoor Plants",
+          description: "Shop our exclusive collection of rare Philodendrons. Hand-picked, healthy plants delivered to your door. 30-day health guarantee.",
+          keywords: ["buy philodendron online", "rare house plants", "exotic indoor plants", "philodendron pink princess"],
+          sitelinks: ["New Arrivals", "Care Guides", "Plant Subscription", "Gift Cards"]
+        },
+        {
+          id: `${campaign.id}_2`,
+          headline: "Rare Philodendrons Found | Back In Stock",
+          description: "Missed out? Our rare Philodendrons are back in stock. Order yours before they go.",
+          keywords: ["buy philodendron online", "rare house plants", "exotic indoor plants"],
+          sitelinks: ["New Arrivals", "Care Guides"]
+        }
+      ]
+    } else {
+      suggestions = [
+        {
+          id: `${campaign.id}_1`,
+          headline: campaign.id === 'meta_3' ? "Large Indoor Plants | 15% Off First Order" : "Buy Monstera Deliciosa | 20% Off Indoor Plants",
+          description: campaign.id === 'meta_3' ? "Transform your space with big, beautiful statement plants. Delivered safely to your living room." : "Shop premium Monstera plants at Urban Roots. Fast shipping, expert care tips, and a 30-day health guarantee. Bring the jungle home today.",
+          keywords: campaign.id === 'meta_3' ? ["large indoor plants", "statement plants", "fiddle leaf fig buy", "bird of paradise"] : ["buy monstera plant", "indoor plants near me", "monstera deliciosa sale", "large house plants", "urban roots nursery"],
+          sitelinks: campaign.id === 'meta_3' ? ["Shop All Plants", "Care Guides"] : ["Shop All Plants", "Care Guides", "Store Locator", "Sale Items"]
+        },
+        {
+          id: `${campaign.id}_2`,
+          headline: campaign.id === 'meta_3' ? "Statement Plants For Home | Urban Roots" : "Monstera Deliciosa Sale | Free Shipping",
+          description: campaign.id === 'meta_3' ? "Bring nature indoors with our large plant collection. High quality, hand selected plants." : "Get your dream Monstera plant today. Healthy, vibrant plants guaranteed.",
+          keywords: campaign.id === 'meta_3' ? ["large indoor plants", "statement plants"] : ["buy monstera plant", "monstera deliciosa sale"],
+          sitelinks: ["New Arrivals", "Care Guides"]
+        }
+      ]
     }
     return {
-      id: campaign.id,
-      headline: campaign.id === 'meta_3' ? "Large Indoor Plants | 15% Off First Order" : "Buy Monstera Deliciosa | 20% Off Indoor Plants",
-      description: campaign.id === 'meta_3' ? "Transform your space with big, beautiful statement plants. Delivered safely to your living room." : "Shop premium Monstera plants at Urban Roots. Fast shipping, expert care tips, and a 30-day health guarantee. Bring the jungle home today.",
-      keywords: campaign.id === 'meta_3' ? ["large indoor plants", "statement plants", "fiddle leaf fig buy", "bird of paradise"] : ["buy monstera plant", "indoor plants near me", "monstera deliciosa sale", "large house plants", "urban roots nursery"],
-      sitelinks: ["Shop All Plants", "Care Guides", "Store Locator", "Sale Items"]
+      campaignId: campaign.id,
+      suggestions: suggestions
     }
   })
+})
+
+const fallbackAdPreviews = {
+  'meta_1': {
+    headlines: ["Buy Monstera Deliciosa | 20% Off", "Monstera Deliciosa Sale | Free Shipping", "Exotic Monstera Plants | Urban Roots", "Shop Monstera Plants | Health Guarantee"],
+    descriptions: ["Shop premium Monstera plants at Urban Roots. Fast shipping, expert care tips.", "Get your dream Monstera plant today. Healthy, vibrant plants guaranteed.", "Bring nature indoors with our large plant collection. High quality plants."],
+    keywords: ["buy monstera plant", "monstera deliciosa sale"]
+  },
+  'meta_2': {
+    headlines: ["Rare Philodendrons | Exotic Plants", "Rare Philodendrons Found | Back In Stock", "Exotic Indoor Plants | Shop Now", "Limited Rare Plants | Urban Roots"],
+    descriptions: ["Shop our exclusive collection of rare Philodendrons. Hand-picked, healthy plants.", "Missed out? Our rare Philodendrons are back in stock. Order yours before they go.", "Transform your space with big, beautiful statement plants."],
+    keywords: ["buy philodendron online", "rare house plants"]
+  },
+  'meta_3': {
+    headlines: ["Large Indoor Plants | 15% Off", "Statement Plants For Home | Urban Roots", "Big Beautiful Plants | Delivered Safe", "Shop Large House Plants | Sale"],
+    descriptions: ["Transform your space with big, beautiful statement plants. Delivered safely.", "Bring nature indoors with our large plant collection. High quality plants.", "Delivered safely to your living room. Shop premium plants."],
+    keywords: ["large indoor plants", "statement plants"]
+  }
+}
+
+const selectedIndices = ref({}) // { 'campaignId_suggestionIndex': { h: 0, d: 0 } }
+
+const shuffleAd = (campaignId, adIndex) => {
+  const key = `${campaignId}_${adIndex}`
+  let optData = optimizedAdPreviews.value[campaignId]
+  
+  // Fallback to hardcoded data if not loaded
+  if (!isDataLoaded.value || !optData) {
+    optData = fallbackAdPreviews[campaignId]
+  }
+  
+  if (!optData) return
+  
+  if (!selectedIndices.value[key]) {
+    selectedIndices.value[key] = { h: adIndex - 1, d: adIndex - 1 }
+  }
+  
+  const currentIdx = selectedIndices.value[key]
+  
+  const nextH = (currentIdx.h + 1) % optData.headlines.length
+  const nextD = (currentIdx.d + 1) % optData.descriptions.length
+  
+  selectedIndices.value[key] = { h: nextH, d: nextD }
+}
+
+const displayedAdPreviews = computed(() => {
+  const ads = []
+  const useFallback = !isDataLoaded.value || Object.keys(optimizedAdPreviews.value).length === 0
+  
+  selectedCampaignIds.value.forEach(id => {
+    const optData = useFallback ? fallbackAdPreviews[id] : optimizedAdPreviews.value[id]
+    
+    if (optData) {
+      const idx1 = selectedIndices.value[`${id}_1`] || { h: 0, d: 0 }
+      const idx2 = selectedIndices.value[`${id}_2`] || { h: 1, d: 1 }
+      
+      ads.push({
+        campaignId: id,
+        suggestions: [
+          {
+            id: `opt_${id}_1`,
+            headline: optData.headlines[idx1.h] || optData.headlines[0] || 'Headline Fallback 1',
+            description: optData.descriptions[idx1.d] || optData.descriptions[0] || 'Description Fallback 1',
+            keywords: useFallback ? optData.keywords : (optimizedKeywords.value[id] || []),
+            sitelinks: ["New Arrivals", "Care Guides"]
+          },
+          {
+            id: `opt_${id}_2`,
+            headline: optData.headlines[idx2.h] || optData.headlines[1] || optData.headlines[0] || 'Headline Fallback 2',
+            description: optData.descriptions[idx2.d] || optData.descriptions[1] || optData.descriptions[0] || 'Description Fallback 2',
+            keywords: useFallback ? optData.keywords : (optimizedKeywords.value[id] || []),
+            sitelinks: ["New Arrivals", "Care Guides"]
+          }
+        ]
+      })
+    }
+  })
+  
+  return ads.length > 0 ? ads : googleAdPreviews.value
 })
 
 const removedKeywords = ref(new Set())
@@ -168,7 +290,19 @@ const manuallyAddedKeywords = ref([])
 const newKeywordInput = ref('')
 
 const activeKeywords = computed(() => {
-  const allKws = googleAdPreviews.value.flatMap(ad => ad.keywords)
+  const allKws = []
+  
+  if (isDataLoaded.value && Object.keys(optimizedKeywords.value).length > 0) {
+    selectedCampaignIds.value.forEach(id => {
+      const kws = optimizedKeywords.value[id]
+      if (kws) {
+        allKws.push(...kws)
+      }
+    })
+  } else {
+    allKws.push(...displayedAdPreviews.value.flatMap(ad => ad.keywords))
+  }
+    
   const uniqueKws = [...new Set(allKws)]
   const filtered = uniqueKws.filter(kw => !removedKeywords.value.has(kw))
   return [...new Set([...filtered, ...manuallyAddedKeywords.value])]
@@ -215,11 +349,11 @@ const handleLaunch = () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-stone-50 text-slate-900 font-sans flex flex-col selection:bg-emerald-500/20">
+  <div class="h-screen bg-stone-50 text-slate-900 font-sans flex flex-col selection:bg-emerald-500/20">
     <!-- Navbar -->
     <nav class="bg-white border-b border-stone-200 z-50">
       <div class="w-full px-8 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 cursor-pointer" @click="router.push('/')">
            <Logo size="w-8 h-8" />
            <span class="text-xl font-extrabold tracking-tight">Metamorph</span>
         </div>
@@ -322,51 +456,64 @@ const handleLaunch = () => {
                    <div class="flex items-center gap-3">
                         <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Ad Drafts</h4>
                         <div class="h-px bg-stone-200 flex-1"></div>
+
                     </div>
 
-                    <div 
-                        v-for="ad in googleAdPreviews" 
-                        :key="ad.id"
-                        class="transform transition-all duration-700 hover:translate-y-[-4px]" 
-                        :class="isMorphing ? 'opacity-50 scale-95 blur-sm' : 'opacity-100 scale-100'"
-                    >
-                        <div class="bg-white rounded-[24px] p-8 shadow-2xl premium-shadow relative border border-white">
-                             <div class="absolute -top-4 -right-4 w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-xl z-10 border border-stone-100 p-2.5 hover:rotate-6 transition-transform">
-                                <svg viewBox="0 0 24 24" class="w-full h-full">
-                                    <path fill="#4285F4" d="M23.745 12.27c0-.79-.07-1.54-.19-2.27h-11.3v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.6v3.1h3.9c2.28-2.1 3.6-5.2 3.6-8.3z"/>
-                                    <path fill="#34A853" d="M12.255 24c3.24 0 5.95-1.08 7.96-2.91l-3.91-3.09c-1.08.72-2.44 1.15-4.05 1.15-3.13 0-5.78-2.11-6.73-4.96h-4.04v3.09C3.655 21.03 7.635 24 12.255 24z"/>
-                                    <path fill="#FBBC05" d="M5.525 14.2a6.99 6.99(0 0 1 0-4.39v-3.09h-4.04C.695 8.355 0 10.125 0 12s.695 3.645 1.485 5.29l4.04-3.09z"/>
-                                    <path fill="#EA4335" d="M12.255 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C18.205 1.19 15.495 0 12.255 0c-4.62 0-8.6 2.97-10.77 7.29l4.04 3.09c.95-2.85 3.6-4.96 6.73-4.96z"/>
-                                </svg>
-                             </div>
+                    <div v-for="group in displayedAdPreviews" :key="group.campaignId" class="mb-10">
+                        <div class="flex items-center gap-3 mb-4">
+                            <h4 class="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">Suggestions for Campaign {{ group.campaignId }}</h4>
+                            <div class="h-px bg-stone-200 flex-1"></div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div 
+                                v-for="(ad, index) in group.suggestions" 
+                                :key="ad.id"
+                                class="transform transition-all duration-700 hover:translate-y-[-4px]" 
+                                :class="isMorphing ? 'opacity-50 scale-95 blur-sm' : 'opacity-100 scale-100'"
+                            >
+                                <div class="bg-white rounded-[24px] p-8 shadow-2xl premium-shadow relative border border-white h-full flex flex-col justify-between">
+                                     <div class="absolute -top-4 -right-4 w-12 h-12 bg-white rounded-2xl flex items-center justify-center shadow-xl z-10 border border-stone-100 p-2.5 hover:rotate-6 transition-transform">
+                                        <svg viewBox="0 0 24 24" class="w-full h-full">
+                                            <path fill="#4285F4" d="M23.745 12.27c0-.79-.07-1.54-.19-2.27h-11.3v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.6v3.1h3.9c2.28-2.1 3.6-5.2 3.6-8.3z"/>
+                                            <path fill="#34A853" d="M12.255 24c3.24 0 5.95-1.08 7.96-2.91l-3.91-3.09c-1.08.72-2.44 1.15-4.05 1.15-3.13 0-5.78-2.11-6.73-4.96h-4.04v3.09C3.655 21.03 7.635 24 12.255 24z"/>
+                                            <path fill="#FBBC05" d="M5.525 14.2a6.99 6.99(0 0 1 0-4.39v-3.09h-4.04C.695 8.355 0 10.125 0 12s.695 3.645 1.485 5.29l4.04-3.09z"/>
+                                            <path fill="#EA4335" d="M12.255 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C18.205 1.19 15.495 0 12.255 0c-4.62 0-8.6 2.97-10.77 7.29l4.04 3.09c.95-2.85 3.6-4.96 6.73-4.96z"/>
+                                        </svg>
+                                     </div>
 
-                            <div class="flex items-center gap-3 mb-6">
-                                 <div class="w-10 h-10 rounded-xl overflow-hidden bg-stone-100 border border-stone-200">
-                                    <Logo size="w-full h-full" />
-                                 </div>
-                                 <div class="flex flex-col">
-                                    <span class="text-sm font-black text-slate-950">{{ businessProfile.name }}</span>
-                                    <span class="text-xs text-slate-500 font-medium">{{ businessProfile.website.replace('https://', '') }}</span>
-                                 </div>
-                                 <div class="ml-auto flex items-center gap-2">
-                                   <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2 py-1 bg-stone-50 rounded-lg">Sponsored</span>
-                                 </div>
-                            </div>
+                                    <div>
+                                        <div class="flex items-center gap-3 mb-6">
+                                             <div class="w-10 h-10 rounded-xl overflow-hidden bg-stone-100 border border-stone-200">
+                                                <Logo size="w-full h-full" />
+                                             </div>
+                                             <div class="flex flex-col">
+                                                <span class="text-sm font-black text-slate-950">{{ businessProfile.name }}</span>
+                                                <span class="text-xs text-slate-500 font-medium">{{ businessProfile.website.replace('https://', '') }}</span>
+                                             </div>
+                                             <div class="ml-auto flex items-center gap-2">
+                                                <button @click="shuffleAd(group.campaignId, index + 1)" class="text-slate-400 hover:text-slate-900 transition-colors p-1 hover:bg-stone-50 rounded-lg" title="Shuffle Headline & Description">
+                                                    <RefreshCw class="w-4 h-4" />
+                                                </button>
+                                                <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest px-2 py-1 bg-stone-50 rounded-lg">Sponsored</span>
+                                             </div>
+                                        </div>
 
-                            <div class="space-y-3">
-                                <h3 class="text-2xl text-[#1a0dab] hover:text-[#1906a3] cursor-pointer font-bold leading-tight underline decoration-transparent hover:decoration-[#1906a3] transition-all">
-                                    {{ ad.headline }}
-                                </h3>
-                                <p class="text-base text-slate-600 leading-relaxed max-w-2xl font-medium">
-                                    {{ ad.description }}
-                                </p>
-                            </div>
+                                        <div class="space-y-3">
+                                            <h3 class="text-xl text-[#1a0dab] hover:text-[#1906a3] cursor-pointer font-bold leading-tight underline decoration-transparent hover:decoration-[#1906a3] transition-all">
+                                                {{ ad.headline }}
+                                            </h3>
+                                            <p class="text-sm text-slate-600 leading-relaxed font-medium">
+                                                {{ ad.description }}
+                                            </p>
+                                        </div>
+                                    </div>
 
-                            <div class="mt-8 pt-8 border-t border-stone-100 flex flex-wrap gap-x-8 gap-y-3">
-                                 <span v-for="link in ad.sitelinks" :key="link" class="text-sm font-bold text-[#1a0dab] hover:underline cursor-pointer flex items-center gap-1.5">
-                                    {{ link }}
-                                    <ArrowRight class="w-3 h-3 opacity-40" />
-                                 </span>
+                                    <div class="mt-6 pt-6 border-t border-stone-100 flex flex-wrap gap-x-4 gap-y-2">
+                                         <span v-for="link in ad.sitelinks" :key="link" class="text-xs font-medium text-[#1a0dab] hover:underline cursor-pointer flex items-center">
+                                            {{ link }}
+                                         </span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -433,7 +580,10 @@ const handleLaunch = () => {
                         <div v-if="visibleImages.length === 0" class="py-12 border-2 border-stone-100 border-dashed rounded-2xl flex flex-col items-center justify-center text-center">
                             <Layers class="w-12 h-12 text-stone-200 mb-4" />
                             <div class="text-slate-400 text-sm font-bold mb-2 uppercase tracking-widest">No images active</div>
-                            <button @click="resetImages" class="text-blue-600 text-xs font-black hover:underline uppercase tracking-widest mt-2">Restore Assets</button>
+                            <div class="flex gap-4 mt-2">
+                                <button @click="resetImages" class="text-blue-600 text-xs font-black hover:underline uppercase tracking-widest">Restore Assets</button>
+                                <button @click="triggerFileUpload" class="text-emerald-600 text-xs font-black hover:underline uppercase tracking-widest">Upload Image</button>
+                            </div>
                         </div>
 
                         <div v-else class="grid grid-cols-4 gap-6">
@@ -451,7 +601,16 @@ const handleLaunch = () => {
                                     <X class="w-4 h-4" />
                                 </button>
                              </div>
+                             
+                             <!-- Upload Card -->
+                             <div @click="triggerFileUpload" class="relative aspect-square rounded-[20px] border-2 border-stone-200 border-dashed hover:border-emerald-500/50 cursor-pointer flex flex-col items-center justify-center text-stone-400 hover:text-emerald-500 transition-all bg-stone-50/50 hover:bg-white">
+                                 <Plus class="w-8 h-8 mb-2" />
+                                 <span class="text-xs font-bold uppercase tracking-widest">Upload</span>
+                             </div>
                         </div>
+                        
+                        <!-- Hidden File Input -->
+                        <input type="file" ref="fileInput" class="hidden" accept="image/*" multiple @change="handleImageUpload" />
                     </div>
                 </div>
 

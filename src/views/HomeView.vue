@@ -11,7 +11,7 @@ const router = useRouter()
     <!-- Navbar -->
     <nav class="fixed top-0 w-full z-50 bg-white/80 backdrop-blur-md border-b border-stone-200">
       <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-3 cursor-pointer" @click="router.push('/')">
            <Logo size="w-8 h-8" />
            <span class="text-xl font-extrabold tracking-tight text-slate-900">Metamorph</span>
         </div>
