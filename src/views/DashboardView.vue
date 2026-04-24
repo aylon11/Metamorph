@@ -142,6 +142,35 @@ const updateBudgetFromChart = (event) => {
 const accountName = ref(businessProfile.name)
 const accountStructure = ref([])
 
+const accountNodeStyle = computed(() => {
+  const n = accountStructure.value.length;
+  const c = n + 1;
+  const center = (n / (2 * c)) * 100;
+  
+  return {
+    position: 'relative',
+    left: `${center}%`,
+    transform: 'translateX(-50%)',
+    alignSelf: 'flex-start',
+  };
+});
+
+const horizontalLineStyle = computed(() => {
+  const n = accountStructure.value.length;
+  const c = n + 1;
+  if (n <= 1) return { visibility: 'hidden', height: '1px' };
+  
+  const width = ((n - 1) / c) * 100;
+  const left = (1 / (2 * c)) * 100;
+  
+  return {
+    width: `${width}%`,
+    marginLeft: `${left}%`,
+    marginRight: 'auto',
+  };
+});
+
+
 const initializeStructure = () => {
     const baseStructure = [
         {
@@ -426,6 +455,18 @@ const activeKeywords = computed(() => {
   const uniqueKws = [...new Set(allKws)]
   const filtered = uniqueKws.filter(kw => !removedKeywords.value.has(kw))
   return [...new Set([...filtered, ...manuallyAddedKeywords.value])]
+})
+
+const totalAdGroupsCount = computed(() => {
+  return accountStructure.value.reduce((total, camp) => total + (camp.adGroups ? camp.adGroups.length : 0), 0)
+})
+
+const totalAdsCount = computed(() => {
+  return displayedAdPreviews.value.reduce((total, group) => total + (group.suggestions ? group.suggestions.length : 0), 0)
+})
+
+const totalKeywordsCount = computed(() => {
+  return activeKeywords.value.length
 })
 
 const removeKeyword = (kw) => {
@@ -833,23 +874,29 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                         <div class="h-px bg-stone-200 w-24"></div>
                     </div>
 
-                    <div class="flex flex-col items-center">
-                        <!-- Account Node -->
-                        <div 
-                            @click="editAccountName"
-                            class="z-10 bg-slate-950 text-white px-8 py-4 rounded-[20px] text-sm font-black flex items-center gap-3 shadow-2xl shadow-slate-950/20 group hover:scale-105 transition-transform uppercase tracking-widest cursor-pointer hover:bg-slate-900"
-                            :title="`Click to rename account: ${accountName}`"
-                        >
-                            <Layers class="w-5 h-5 text-emerald-500" />
-                            <span>{{ accountName }}</span>
-                            <span class="text-slate-500 font-medium">(Account)</span>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
-                        </div>
+                    <div class="w-full overflow-x-auto pb-8 custom-scrollbar">
+                        <div class="inline-flex flex-col min-w-full relative px-8">
+                            <!-- Account Node -->
+                            <div 
+                                @click="editAccountName"
+                                :style="accountNodeStyle"
+                                class="z-10 bg-slate-950 text-white px-8 py-4 rounded-[20px] text-sm font-black flex items-center gap-3 shadow-2xl shadow-slate-950/20 group hover:scale-105 transition-transform uppercase tracking-widest cursor-pointer hover:bg-slate-900"
+                                :title="`Click to rename account: ${accountName}`"
+                            >
+                                <Layers class="w-5 h-5 text-emerald-500" />
+                                <span>{{ accountName }}</span>
+                                <span class="text-slate-500 font-medium">(Account)</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                            </div>
 
-                        <div class="w-px h-10 bg-stone-200"></div>
-                        <div class="w-[84%] h-px bg-stone-200 relative"></div>
+                            <div :style="accountNodeStyle" class="w-px h-10 bg-stone-200"></div>
+                            
+                            <div class="w-full mt-2 mb-6">
+                                <div :style="horizontalLineStyle" class="h-px bg-stone-200"></div>
+                            </div>
 
-                        <div class="grid gap-8 mt-0 w-full" :style="`grid-template-columns: repeat(${accountStructure.length + 1}, minmax(0, 1fr))`">
+                            <div class="grid gap-8 mt-0 w-full" :style="`grid-template-columns: repeat(${accountStructure.length + 1}, minmax(220px, 1fr))`">
+
                             <div v-for="(camp, i) in accountStructure" :key="i" class="flex flex-col items-center relative pt-10">
                                 <div class="absolute top-0 w-px h-10 bg-stone-200"></div>
                                 
@@ -858,12 +905,13 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                                     <div class="text-[9px] font-black uppercase text-emerald-600 mb-2 tracking-[0.2em] opacity-80">Campaign</div>
                                     <div 
                                         @click="editCampaignName(i)"
-                                        class="text-sm font-black tracking-tight truncate px-1 cursor-pointer hover:text-emerald-600 flex items-center justify-center gap-1 group/name" 
+                                        class="text-sm font-black tracking-tight px-1 cursor-pointer hover:text-emerald-600 flex items-center justify-center gap-1 group/name w-full min-w-0" 
                                         :title="`Click to rename: ${camp.name}`"
                                     >
-                                        <span>{{ camp.name }}</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-slate-400 opacity-0 group-hover/name:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                                        <span class="truncate">{{ camp.name }}</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 w-3.5 h-3.5 text-slate-400 opacity-0 group-hover/name:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
                                     </div>
+
                                     
                                     <!-- Delete Button -->
                                     <button 
@@ -884,11 +932,11 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                                             <div class="text-[8px] text-slate-400 font-black uppercase mb-1 tracking-widest opacity-60">{{ ag.device }}</div>
                                             <div 
                                                 @click="editAdGroupName(i, agIndex)"
-                                                class="text-[10px] font-bold text-slate-700 leading-tight cursor-pointer hover:text-emerald-600 flex items-center justify-center gap-1 group/name"
+                                                class="text-[10px] font-bold text-slate-700 leading-tight cursor-pointer hover:text-emerald-600 flex items-center justify-center gap-1 group/name w-full min-w-0"
                                                 :title="`Click to rename: ${ag.name}`"
                                             >
-                                                <span>{{ ag.name }}</span>
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-slate-400 opacity-0 group-hover/name:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                                                <span class="truncate">{{ ag.name }}</span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="shrink-0 w-3 h-3 text-slate-400 opacity-0 group-hover/name:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
                                             </div>
                                             
                                             <!-- Delete Button -->
@@ -928,6 +976,8 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                         </div>
                     </div>
                 </div>
+            </div>
+
 
                 <!-- ROI Forecast Section -->
                 <div class="mt-24 pb-32">
@@ -1165,7 +1215,19 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                     </div>
                     <div class="p-4 bg-stone-50 rounded-2xl border border-stone-100 flex items-center justify-between">
                         <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Campaigns</span>
-                        <span class="text-lg font-black text-slate-950">{{ selectedCampaigns.length }} Active</span>
+                        <span class="text-lg font-black text-slate-950">{{ accountStructure.length }} Active</span>
+                    </div>
+                    <div class="p-4 bg-stone-50 rounded-2xl border border-stone-100 flex items-center justify-between">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Ad Groups</span>
+                        <span class="text-lg font-black text-slate-950">{{ totalAdGroupsCount }}</span>
+                    </div>
+                    <div class="p-4 bg-stone-50 rounded-2xl border border-stone-100 flex items-center justify-between">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Keywords</span>
+                        <span class="text-lg font-black text-slate-950">{{ totalKeywordsCount }}</span>
+                    </div>
+                    <div class="p-4 bg-stone-50 rounded-2xl border border-stone-100 flex items-center justify-between">
+                        <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Ads (Drafts)</span>
+                        <span class="text-lg font-black text-slate-950">{{ totalAdsCount }}</span>
                     </div>
                      <div class="p-4 bg-stone-50 rounded-2xl border border-stone-100 flex items-center justify-between">
                         <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Target Account</span>
