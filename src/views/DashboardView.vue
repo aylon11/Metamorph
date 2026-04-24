@@ -4,7 +4,7 @@ import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { metaCampaigns, extractedAssets } from '../data/metaIngestion'
 import { businessProfile } from '../data/mockData'
-import { optimizedAdPreviews, optimizedKeywords, isDataLoaded } from '../data/sharedState'
+import { optimizedAdPreviews, optimizedKeywords, isDataLoaded, deployedCustomerId, deployedUserEmail, deployedMccOcid } from '../data/sharedState'
 import { 
   ArrowRight, 
   TrendingUp, 
@@ -139,6 +139,7 @@ const updateBudgetFromChart = (event) => {
    userBudget.value = val
 }
 
+const accountName = ref(businessProfile.name)
 const accountStructure = ref([])
 
 const initializeStructure = () => {
@@ -255,6 +256,13 @@ const addAdGroup = async (campaignIndex) => {
 
 const removeAdGroup = (campaignIndex, adGroupIndex) => {
     accountStructure.value[campaignIndex].adGroups.splice(adGroupIndex, 1)
+}
+
+const editAccountName = async () => {
+    const name = await openPrompt('Edit Account Name', 'Account Name', accountName.value)
+    if (name && name.trim()) {
+        accountName.value = name.trim()
+    }
 }
 
 const editCampaignName = async (index) => {
@@ -449,15 +457,74 @@ const handleSignIn = () => {
     }, 1500)
 }
 
-const handleLaunch = () => {
+const formatCustomerId = (id) => {
+    if (!id) return '';
+    const s = id.toString();
+    if (s.length !== 10) return s;
+    return `${s.substring(0, 3)}-${s.substring(3, 6)}-${s.substring(6)}`;
+}
+
+const openGoogleAds = () => {
+    if (deployedCustomerId.value) {
+        let url = `https://ads.google.com/aw/overview?__c=${deployedCustomerId.value}`;
+        if (deployedMccOcid.value) {
+            url += `&ocid=${deployedMccOcid.value}`;
+        }
+        if (deployedUserEmail.value) {
+            url += `&authuser=${encodeURIComponent(deployedUserEmail.value)}`;
+        }
+        window.open(url, '_blank');
+    } else {
+        window.open('https://ads.google.com', '_blank');
+    }
+}
+
+
+
+const handleLaunch = async () => {
     if (isLaunching.value || launchSuccess.value) return
     isLaunching.value = true
-    setTimeout(() => {
-        isLaunching.value = false
-        launchSuccess.value = true
-        showLaunchModal.value = false
-    }, 2500)
+    
+    try {
+        const payload = {
+            accountName: accountName.value,
+            websiteUrl: businessProfile.website,
+            budgetAmount: userBudget.value,
+            structure: accountStructure.value,
+            assets: optimizedAdPreviews.value,
+            keywords: optimizedKeywords.value,
+            activeKeywords: activeKeywords.value
+        };
+        
+        const response = await fetch('http://localhost:3000/api/deploy', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload),
+        });
+        
+        const data = await response.json();
+        
+        if (!response.ok || !data.success) {
+            throw new Error(data.error || 'Deployment failed');
+        }
+        
+        deployedCustomerId.value = data.customerId;
+        deployedUserEmail.value = data.userEmail;
+        deployedMccOcid.value = data.mccOcid;
+
+
+        isLaunching.value = false;
+        launchSuccess.value = true;
+        showLaunchModal.value = false;
+    } catch (error) {
+        console.error('Deployment failed:', error);
+        isLaunching.value = false;
+        alert(`Deployment Failed: ${error.message}`);
+    }
 }
+
 </script>
 
 <template>
@@ -588,7 +655,8 @@ const handleLaunch = () => {
                                         <svg viewBox="0 0 24 24" class="w-full h-full">
                                             <path fill="#4285F4" d="M23.745 12.27c0-.79-.07-1.54-.19-2.27h-11.3v4.51h6.47c-.29 1.48-1.14 2.73-2.4 3.6v3.1h3.9c2.28-2.1 3.6-5.2 3.6-8.3z"/>
                                             <path fill="#34A853" d="M12.255 24c3.24 0 5.95-1.08 7.96-2.91l-3.91-3.09c-1.08.72-2.44 1.15-4.05 1.15-3.13 0-5.78-2.11-6.73-4.96h-4.04v3.09C3.655 21.03 7.635 24 12.255 24z"/>
-                                            <path fill="#FBBC05" d="M5.525 14.2a6.99 6.99(0 0 1 0-4.39v-3.09h-4.04C.695 8.355 0 10.125 0 12s.695 3.645 1.485 5.29l4.04-3.09z"/>
+                                            <path fill="#FBBC05" d="M5.525 14.2a6.99 6.99 0 0 1 0-4.39v-3.09h-4.04C.695 8.355 0 10.125 0 12s.695 3.645 1.485 5.29l4.04-3.09z"/>
+
                                             <path fill="#EA4335" d="M12.255 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C18.205 1.19 15.495 0 12.255 0c-4.62 0-8.6 2.97-10.77 7.29l4.04 3.09c.95-2.85 3.6-4.96 6.73-4.96z"/>
                                         </svg>
                                      </div>
@@ -599,7 +667,7 @@ const handleLaunch = () => {
                                                 <Logo size="w-full h-full" />
                                              </div>
                                              <div class="flex flex-col">
-                                                <span class="text-sm font-black text-slate-950">{{ businessProfile.name }}</span>
+                                                <span class="text-sm font-black text-slate-950">{{ accountName }}</span>
                                                 <span class="text-xs text-slate-500 font-medium">{{ businessProfile.website.replace('https://', '') }}</span>
                                              </div>
                                              <div class="ml-auto flex items-center gap-2">
@@ -767,10 +835,15 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
 
                     <div class="flex flex-col items-center">
                         <!-- Account Node -->
-                        <div class="z-10 bg-slate-950 text-white px-8 py-4 rounded-[20px] text-sm font-black flex items-center gap-3 shadow-2xl shadow-slate-950/20 group hover:scale-105 transition-transform uppercase tracking-widest">
+                        <div 
+                            @click="editAccountName"
+                            class="z-10 bg-slate-950 text-white px-8 py-4 rounded-[20px] text-sm font-black flex items-center gap-3 shadow-2xl shadow-slate-950/20 group hover:scale-105 transition-transform uppercase tracking-widest cursor-pointer hover:bg-slate-900"
+                            :title="`Click to rename account: ${accountName}`"
+                        >
                             <Layers class="w-5 h-5 text-emerald-500" />
-                            {{ businessProfile.name }}
-                            <span class="text-slate-500 ml-2 font-medium">(Account)</span>
+                            <span>{{ accountName }}</span>
+                            <span class="text-slate-500 font-medium">(Account)</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity ml-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
                         </div>
 
                         <div class="w-px h-10 bg-stone-200"></div>
@@ -1043,14 +1116,16 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                                 
                                 <h3 class="text-3xl font-black text-slate-950 mb-3 z-10 tracking-tight">Transformation Complete</h3>
                                 <p class="text-slate-500 font-bold z-10 uppercase tracking-widest text-xs mb-8">
-                                    Reference ID: <span class="text-slate-950">#GOOG-{{ Math.floor(Math.random() * 100000) }}</span>
+                                    Customer ID: <span class="text-slate-950">{{ formatCustomerId(deployedCustomerId) }}</span>
                                 </p>
+
                                 
                                 <p class="text-base text-slate-600 z-10 max-w-md mx-auto leading-relaxed font-medium">
                                     Your campaigns have been safely deployed to Google Ads. Optimization and quality score tracking are now active.
                                 </p>
 
-                                <button @click="window.open('https://ads.google.com', '_blank')" class="mt-10 px-8 py-4 bg-[#4285F4] hover:bg-[#3b78db] text-white rounded-2xl text-sm font-black uppercase tracking-[0.2em] transition-all z-10 flex items-center gap-3 shadow-xl">
+                                <button @click="openGoogleAds" class="mt-10 px-8 py-4 bg-[#4285F4] hover:bg-[#3b78db] text-white rounded-2xl text-sm font-black uppercase tracking-[0.2em] transition-all z-10 flex items-center gap-3 shadow-xl">
+
                                     <div class="bg-white p-1 rounded-lg w-6 h-6 flex items-center justify-center shadow-sm">
                                          <img 
                                             src="https://upload.wikimedia.org/wikipedia/commons/c/c7/Google_Ads_logo.svg" 
@@ -1094,7 +1169,7 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                     </div>
                      <div class="p-4 bg-stone-50 rounded-2xl border border-stone-100 flex items-center justify-between">
                         <span class="text-[10px] font-black text-slate-400 uppercase tracking-widest">Target Account</span>
-                        <span class="text-sm font-black text-emerald-600 truncate max-w-[160px]">{{ businessProfile.name }}</span>
+                        <span class="text-sm font-black text-emerald-600 truncate max-w-[160px]">{{ accountName }}</span>
                     </div>
                 </div>
 
