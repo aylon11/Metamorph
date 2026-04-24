@@ -37,6 +37,28 @@ export const metaCampaigns = [
     conversions: 15,
     roas: 1.8,
     platform: "Instagram"
+  },
+  {
+    id: "meta_4",
+    name: "Nano Banana - Product Launch",
+    status: "Active",
+    spend: 5500,
+    impressions: 150000,
+    clicks: 4200,
+    conversions: 120,
+    roas: 3.3,
+    platform: "Instagram"
+  },
+  {
+    id: "meta_5",
+    name: "Tiny Trees Retargeting",
+    status: "Active",
+    spend: 3200,
+    impressions: 60000,
+    clicks: 1500,
+    conversions: 55,
+    roas: 3.1,
+    platform: "Facebook"
   }
 ]
 
@@ -45,19 +67,27 @@ export const extractedAssets = {
     "https://images.unsplash.com/photo-1459411552884-841db9b3cc2a?q=80&w=2449&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1545241047-6083a3684587?q=80&w=800&auto=format&fit=crop",
     "https://images.unsplash.com/photo-1463320898484-cdee8141c787?q=80&w=800&auto=format&fit=crop",
-    "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=800&auto=format&fit=crop"
+    "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?q=80&w=800&auto=format&fit=crop",
+    "/images/nano_banana_pot.png",
+    "/images/nano_banana_leaf.png",
+    "/images/nano_banana_balcony.png"
   ],
   headlines: [
     "Bring Nature Indoors",
     "Rare Philodendrons Restocked",
     "Urban Jungle - Plant Sale",
-    "Transform Your Space"
+    "Transform Your Space",
+    "Meet the Nano Banana",
+    "Lush. Compact. Perfect.",
+    "Upgrade Your Balcony Jungle"
   ],
   audience: [
     "Home Decor Enthusiasts (Top 5%)",
     "Apartment Living",
     "Botany Interests",
-    "Sustainable Lifestyle"
+    "Sustainable Lifestyle",
+    "Small Space Gardeners",
+    "Exotic Plant Collectors"
   ]
 }
 

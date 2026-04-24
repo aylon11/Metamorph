@@ -1,6 +1,6 @@
 <script setup>
 
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { metaCampaigns, extractedAssets } from '../data/metaIngestion'
 import { businessProfile } from '../data/mockData'
@@ -139,9 +139,12 @@ const updateBudgetFromChart = (event) => {
    userBudget.value = val
 }
 
-const accountStructure = computed(() => {
+const accountStructure = ref([])
+
+const initializeStructure = () => {
     const baseStructure = [
         {
+            id: 'brand_protection',
             name: "Brand Protection",
             adGroups: [
                 { name: "Brand - Mobile", device: "Ad Group" },
@@ -151,6 +154,7 @@ const accountStructure = computed(() => {
     ]
 
     const dynamicCampaigns = selectedCampaigns.value.map(c => ({
+        id: c.id,
         name: c.name.replace(' - Instagram Boost', '').replace('Retargeting', 'Search'),
         adGroups: [
             { name: "Generic - Mobile", device: "Ad Group" },
@@ -158,8 +162,116 @@ const accountStructure = computed(() => {
         ]
     }))
 
-    return [...baseStructure, ...dynamicCampaigns]
-})
+    accountStructure.value = [...baseStructure, ...dynamicCampaigns]
+}
+
+initializeStructure()
+
+watch(selectedCampaigns, (newCampaigns) => {
+    const newIds = newCampaigns.map(c => c.id)
+    
+    // Remove campaigns that were derived from Meta but are no longer selected
+    accountStructure.value = accountStructure.value.filter(camp => {
+        if (camp.id && camp.id.startsWith('meta_')) {
+            return newIds.includes(camp.id)
+        }
+        return true 
+    })
+
+    // Add missing campaigns from new selections
+    newCampaigns.forEach(c => {
+        const exists = accountStructure.value.some(camp => camp.id === c.id)
+        if (!exists) {
+            accountStructure.value.push({
+                id: c.id,
+                name: c.name.replace(' - Instagram Boost', '').replace('Retargeting', 'Search'),
+                adGroups: [
+                    { name: "Generic - Mobile", device: "Ad Group" },
+                    { name: "Generic - Desktop", device: "Ad Group" }
+                ]
+            })
+        }
+    })
+}, { deep: true })
+
+const showPromptModal = ref(false)
+const promptTitle = ref('')
+const promptPlaceholder = ref('')
+const promptValue = ref('')
+let promptResolve = null
+
+const openPrompt = (title, placeholder, defaultValue = '') => {
+    promptTitle.value = title
+    promptPlaceholder.value = placeholder
+    promptValue.value = defaultValue
+    showPromptModal.value = true
+    
+    return new Promise((resolve) => {
+        promptResolve = resolve
+    })
+}
+
+const handlePromptSubmit = () => {
+    if (promptResolve) {
+        promptResolve(promptValue.value)
+    }
+    showPromptModal.value = false
+}
+
+const handlePromptCancel = () => {
+    if (promptResolve) {
+        promptResolve(null)
+    }
+    showPromptModal.value = false
+}
+
+const addCampaign = async () => {
+    const name = await openPrompt('Create New Campaign', 'e.g. Summer Sale')
+    if (name && name.trim()) {
+        accountStructure.value.push({
+            id: 'custom_' + Date.now(),
+            name: name.trim(),
+            adGroups: [
+                { name: "Generic - Mobile", device: "Ad Group" },
+                { name: "Generic - Desktop", device: "Ad Group" }
+            ]
+        })
+    }
+}
+
+const removeCampaign = (index) => {
+    accountStructure.value.splice(index, 1)
+}
+
+const addAdGroup = async (campaignIndex) => {
+    const name = await openPrompt('Create New Ad Group', 'e.g. Mobile - Search')
+    if (name && name.trim()) {
+        accountStructure.value[campaignIndex].adGroups.push({
+            name: name.trim(),
+            device: 'Ad Group'
+        })
+    }
+}
+
+const removeAdGroup = (campaignIndex, adGroupIndex) => {
+    accountStructure.value[campaignIndex].adGroups.splice(adGroupIndex, 1)
+}
+
+const editCampaignName = async (index) => {
+    const currentName = accountStructure.value[index].name
+    const name = await openPrompt('Edit Campaign Name', 'Campaign Name', currentName)
+    if (name && name.trim()) {
+        accountStructure.value[index].name = name.trim()
+    }
+}
+
+const editAdGroupName = async (campaignIndex, adGroupIndex) => {
+    const currentName = accountStructure.value[campaignIndex].adGroups[adGroupIndex].name
+    const name = await openPrompt('Edit Ad Group Name', 'Ad Group Name', currentName)
+    if (name && name.trim()) {
+        accountStructure.value[campaignIndex].adGroups[adGroupIndex].name = name.trim()
+    }
+}
 
 const googleAdPreviews = computed(() => {
   return selectedCampaigns.value.map(campaign => {
@@ -664,28 +776,81 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
                         <div class="w-px h-10 bg-stone-200"></div>
                         <div class="w-[84%] h-px bg-stone-200 relative"></div>
 
-                        <div class="grid grid-cols-3 gap-8 mt-0 w-full">
+                        <div class="grid gap-8 mt-0 w-full" :style="`grid-template-columns: repeat(${accountStructure.length + 1}, minmax(0, 1fr))`">
                             <div v-for="(camp, i) in accountStructure" :key="i" class="flex flex-col items-center relative pt-10">
                                 <div class="absolute top-0 w-px h-10 bg-stone-200"></div>
-
+                                
                                 <!-- Campaign Node -->
                                 <div class="bg-white border border-stone-200 text-slate-900 p-5 rounded-[20px] text-center w-full mb-6 relative group hover:border-emerald-500/30 transition-all hover:translate-y-[-4px] shadow-xl premium-shadow">
                                     <div class="text-[9px] font-black uppercase text-emerald-600 mb-2 tracking-[0.2em] opacity-80">Campaign</div>
-                                    <div class="text-sm font-black tracking-tight truncate px-1" :title="camp.name">{{ camp.name }}</div>
+                                    <div 
+                                        @click="editCampaignName(i)"
+                                        class="text-sm font-black tracking-tight truncate px-1 cursor-pointer hover:text-emerald-600 flex items-center justify-center gap-1 group/name" 
+                                        :title="`Click to rename: ${camp.name}`"
+                                    >
+                                        <span>{{ camp.name }}</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5 text-slate-400 opacity-0 group-hover/name:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                                    </div>
+                                    
+                                    <!-- Delete Button -->
+                                    <button 
+                                        @click.stop="removeCampaign(i)"
+                                        class="absolute -top-2 -right-2 bg-white hover:bg-red-50 text-slate-400 hover:text-red-500 border border-stone-200 rounded-xl p-1 opacity-0 group-hover:opacity-100 transition-opacity shadow-md"
+                                    >
+                                        <X class="w-3.5 h-3.5" />
+                                    </button>
                                 </div>
                                 
                                 <div class="w-full grid grid-cols-2 gap-4 relative px-1">
                                     <div class="absolute -top-6 left-1/2 -ml-px w-px h-6 bg-stone-200"></div>
                                     <div class="absolute -top-1 left-1/4 right-1/4 h-px bg-stone-200"></div>
                                     
-                                    <div v-for="ag in camp.adGroups" :key="ag.name" class="relative">
+                                    <div v-for="(ag, agIndex) in camp.adGroups" :key="agIndex" class="relative group">
                                         <div class="absolute -top-1 left-1/2 -ml-px w-px h-2 bg-stone-200"></div>
-                                        <div class="bg-white border border-stone-100 p-3 rounded-2xl text-center hover:bg-stone-50 transition-colors h-full flex flex-col justify-center shadow-sm">
+                                        <div class="bg-white border border-stone-100 p-3 rounded-2xl text-center hover:bg-stone-50 transition-colors h-full flex flex-col justify-center shadow-sm relative">
                                             <div class="text-[8px] text-slate-400 font-black uppercase mb-1 tracking-widest opacity-60">{{ ag.device }}</div>
-                                            <div class="text-[10px] font-bold text-slate-700 leading-tight">{{ ag.name }}</div>
+                                            <div 
+                                                @click="editAdGroupName(i, agIndex)"
+                                                class="text-[10px] font-bold text-slate-700 leading-tight cursor-pointer hover:text-emerald-600 flex items-center justify-center gap-1 group/name"
+                                                :title="`Click to rename: ${ag.name}`"
+                                            >
+                                                <span>{{ ag.name }}</span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-3 h-3 text-slate-400 opacity-0 group-hover/name:opacity-100 transition-opacity" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+                                            </div>
+                                            
+                                            <!-- Delete Button -->
+                                            <button 
+                                                @click.stop="removeAdGroup(i, agIndex)"
+                                                class="absolute -top-1.5 -right-1.5 bg-white hover:bg-red-50 text-slate-400 hover:text-red-500 border border-stone-100 rounded-lg p-0.5 opacity-0 group-hover:opacity-100 transition-opacity shadow-sm"
+                                            >
+                                                <X class="w-3 h-3" />
+                                            </button>
                                         </div>
                                     </div>
+                                    
+                                    <!-- Add Ad Group Button -->
+                                    <div class="relative">
+                                        <div class="absolute -top-1 left-1/2 -ml-px w-px h-2 bg-stone-200"></div>
+                                        <button 
+                                            @click="addAdGroup(i)"
+                                            class="bg-dashed border border-stone-200 border-dashed hover:border-emerald-500/50 text-stone-400 hover:text-emerald-500 p-3 rounded-2xl text-center hover:bg-white transition-colors h-full flex flex-col justify-center items-center shadow-sm min-h-[54px] w-full"
+                                        >
+                                            <Plus class="w-4 h-4" />
+                                        </button>
+                                    </div>
                                 </div>
+                            </div>
+                            
+                            <!-- Add Campaign Card -->
+                            <div class="flex flex-col items-center relative pt-10">
+                                <div class="absolute top-0 w-px h-10 bg-stone-200"></div>
+                                <button 
+                                    @click="addCampaign"
+                                    class="bg-dashed border-2 border-stone-200 hover:border-emerald-500/50 text-stone-400 hover:text-emerald-500 p-5 rounded-[20px] text-center w-full mb-6 flex flex-col items-center justify-center transition-all hover:translate-y-[-4px] bg-stone-50/50 hover:bg-white border-dashed shadow-sm min-h-[90px]"
+                                >
+                                    <Plus class="w-6 h-6 mb-1" />
+                                    <span class="text-xs font-bold uppercase tracking-widest">Add Campaign</span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1041,6 +1206,45 @@ AI Max for Search campaigns is a Google Ads feature set that uses artificial int
           </div>
         </div>
 
+      </div>
+    </div>
+  </div>
+  <!-- Custom Prompt Modal -->
+  <div v-if="showPromptModal" class="fixed inset-0 z-[110] flex items-center justify-center p-6 bg-slate-950/40 backdrop-blur-md" @click="handlePromptCancel">
+    <div class="bg-white w-full max-w-md rounded-[28px] border border-white shadow-2xl relative z-10 overflow-hidden animate-fade-in-up premium-shadow flex flex-col" @click.stop>
+      <div class="p-8">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-xl font-black text-slate-950 tracking-tight uppercase">{{ promptTitle }}</h3>
+          <button @click="handlePromptCancel" class="text-slate-300 hover:text-slate-900 transition-colors p-2 hover:bg-stone-50 rounded-xl">
+            <X class="w-5 h-5" />
+          </button>
+        </div>
+        
+        <div class="mb-6">
+          <input 
+            v-model="promptValue" 
+            @keyup.enter="handlePromptSubmit"
+            type="text" 
+            :placeholder="promptPlaceholder" 
+            class="w-full bg-stone-50 border border-stone-200 rounded-xl px-4 py-3 text-sm font-bold text-slate-900 focus:outline-none focus:ring-4 focus:ring-emerald-500/10 focus:border-emerald-500/30 transition-all placeholder:text-slate-400"
+          />
+        </div>
+        
+        <div class="flex gap-4">
+          <button 
+            @click="handlePromptCancel" 
+            class="flex-1 px-4 py-3 bg-stone-100 hover:bg-stone-200 text-slate-900 rounded-xl font-bold uppercase tracking-widest text-xs transition-colors"
+          >
+            Cancel
+          </button>
+          <button 
+            @click="handlePromptSubmit" 
+            :disabled="!promptValue.trim()"
+            class="flex-[2] px-6 py-3 bg-slate-950 hover:bg-slate-900 text-white disabled:opacity-50 disabled:cursor-not-allowed rounded-xl font-bold uppercase tracking-widest text-xs transition-all flex items-center justify-center shadow-lg shadow-slate-900/10"
+          >
+            Confirm
+          </button>
+        </div>
       </div>
     </div>
   </div>
