@@ -522,11 +522,48 @@ const openGoogleAds = () => {
 
 
 
+const blobToBase64 = (blob) => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onloadend = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(blob);
+  });
+};
+
+const prepareImagesForPayload = async () => {
+  const imagePayloads = [];
+  for (const imgUrl of visibleImages.value) {
+    try {
+      if (imgUrl.startsWith('blob:')) {
+        const response = await fetch(imgUrl);
+        const blob = await response.blob();
+        const base64Data = await blobToBase64(blob);
+        const base64Content = base64Data.split(',')[1] || base64Data;
+        imagePayloads.push({ 
+          data: base64Content, 
+          name: `Asset-${Date.now()}-${Math.random().toString(36).substring(7)}` 
+        });
+      } else {
+        imagePayloads.push({ 
+          url: imgUrl, 
+          name: `Asset-${Date.now()}-${Math.random().toString(36).substring(7)}` 
+        });
+      }
+    } catch (err) {
+      console.error(`Failed to process image ${imgUrl}`, err);
+    }
+  }
+  return imagePayloads;
+};
+
 const handleLaunch = async () => {
     if (isLaunching.value || launchSuccess.value) return
     isLaunching.value = true
     
     try {
+        const preparedImages = await prepareImagesForPayload();
+        
         const payload = {
             accountName: accountName.value,
             websiteUrl: businessProfile.website,
@@ -534,7 +571,8 @@ const handleLaunch = async () => {
             structure: accountStructure.value,
             assets: optimizedAdPreviews.value,
             keywords: optimizedKeywords.value,
-            activeKeywords: activeKeywords.value
+            activeKeywords: activeKeywords.value,
+            images: preparedImages
         };
         
         const response = await fetch('http://localhost:3000/api/deploy', {

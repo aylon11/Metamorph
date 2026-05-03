@@ -10,7 +10,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
 
 // Initialize Genkit
 const ai = genkit({
@@ -388,6 +388,8 @@ app.post('/api/deploy', async (req, res) => {
     const customerId = await createAccount(config, accessToken, accountName);
     console.log(`>>> Created Account ID: ${customerId}`);
     
+
+    
     console.log(`4. Creating Shared Budget: $${budgetAmount}/mo ($${(budgetAmount/30.4).toFixed(2)}/day)...`);
     const budgetResourceName = await createSharedBudget(config, accessToken, customerId, budgetAmount);
     console.log(`>>> Created Shared Budget: ${budgetResourceName}`);
@@ -398,11 +400,30 @@ app.post('/api/deploy', async (req, res) => {
       const campaignResourceName = await createCampaign(config, accessToken, customerId, camp.name, budgetResourceName);
       console.log(`  >>> Created Campaign: ${campaignResourceName}`);
       
+
+      
       // Get assets for this campaign, fallback if needed
-      const campAssets = assets[camp.id] || { 
-        headlines: [`Shop ${camp.name}`.substring(0, 30), `${accountName} Sale`.substring(0, 30), 'Best Quality Plants'],
-        descriptions: [`Premium selection for ${camp.name}. Fast shipping.`.substring(0, 90), `Transform your space with ${accountName}.`.substring(0, 90)]
-      };
+      let campAssets = assets[camp.id];
+      if (!campAssets) {
+        campAssets = {
+          headlines: [
+            `Shop ${camp.name}`.substring(0, 30),
+            `${camp.name} Sale`.substring(0, 30),
+            `${camp.name} Deals`.substring(0, 30),
+            `Celebrate ${camp.name}`.substring(0, 30),
+            'Best Quality Plants',
+            'Exotic Indoor Plants',
+            'Healthy Plants Delivered',
+            'Bring Nature Indoors'
+          ].slice(0, 15),
+          descriptions: [
+            `Find the perfect plants for ${camp.name}. Limited time offers inside.`.substring(0, 90),
+            `Celebrate ${camp.name} with our exclusive indoor plant collection.`.substring(0, 90),
+            'Transform your space with beautiful indoor plants.',
+            'Healthy, vibrant plants guaranteed. 30-day health guarantee.'
+          ].slice(0, 4)
+        };
+      }
 
       
       // Get keywords for this campaign, filter by what's active if available

@@ -19,15 +19,22 @@ const steps = [
 const currentStep = computed(() => steps[currentStepIndex.value])
 
 onMounted(async () => {
+  let fetchDone = false
+  
   // Start progress simulation
   const interval = setInterval(() => {
-    if (progress.value < 90) {
-      progress.value += 0.5
+    if (progress.value < 99) {
+      progress.value += 1
       
-      if (progress.value < 35) currentStepIndex.value = 0
-      else if (progress.value < 60) currentStepIndex.value = 1
-      else if (progress.value < 85) currentStepIndex.value = 2
+      if (progress.value < 25) currentStepIndex.value = 0
+      else if (progress.value < 50) currentStepIndex.value = 1
+      else if (progress.value < 75) currentStepIndex.value = 2
       else currentStepIndex.value = 3
+    } else if (progress.value >= 99 && fetchDone) {
+      progress.value = 100
+      currentStepIndex.value = 3
+      clearInterval(interval)
+      setTimeout(() => router.push('/dashboard'), 500)
     }
   }, 100)
   
@@ -66,17 +73,12 @@ onMounted(async () => {
     optimizedKeywords.value = keywords
     isDataLoaded.value = true
     
-    // Complete progress
-    clearInterval(interval)
-    progress.value = 100
-    currentStepIndex.value = 3
-    
-    setTimeout(() => router.push('/dashboard'), 500)
+    // Signal that fetch is complete
+    fetchDone = true
     
   } catch (error) {
     console.error('Failed to optimize assets:', error);
-    clearInterval(interval)
-    setTimeout(() => router.push('/dashboard'), 500)
+    fetchDone = true
   }
 })
 </script>

@@ -27,7 +27,7 @@ onMounted(() => {
       clearInterval(interval)
       setTimeout(() => router.push('/assets'), 500)
     }
-  }, 40) 
+  }, 34) 
 })
 </script>
 

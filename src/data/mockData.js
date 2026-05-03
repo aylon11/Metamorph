@@ -1,7 +1,7 @@
 export const businessProfile = {
   name: "Urban Jungle Plants",
   industry: "Home & Garden",
-  website: "https://example.com"
+  website: "https://urban-jungle-shop.web.app/"
 }
 
 export const metaCampaigns = [
